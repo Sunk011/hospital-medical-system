@@ -70,11 +70,11 @@ public/uploads/
 .env.test.local
 .env.production
 
-# Cursor AI
-.cursor/
+# # Cursor AI
+# .cursor/
 
-# Claude
-.claude/
+# # Claude
+# .claude/
 
-# Trellis
-.trellis/
+# # Trellis
+# .trellis/

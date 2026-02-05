@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(./.trellis/scripts/get-context.sh:*)",
+      "Bash(./.trellis/scripts/init-developer.sh:*)",
+      "Bash(./.trellis/scripts/task.sh:*)",
+      "Bash(npm install)",
+      "Bash(npx prisma generate:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx vue-tsc:*)",
+      "Bash(npm run build)",
+      "Bash(npm install:*)",
+      "Bash(tree:*)",
+      "Bash(dir:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run typecheck)",
+      "Bash(git add:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm type-check:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
