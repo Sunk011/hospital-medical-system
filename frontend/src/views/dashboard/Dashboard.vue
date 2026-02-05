@@ -9,6 +9,7 @@
       </p>
     </div>
 
+    <!-- Statistics Cards -->
     <el-row
       :gutter="20"
       class="stats-row"
@@ -18,28 +19,17 @@
         :sm="12"
         :md="6"
       >
-        <el-card
-          class="stat-card"
-          shadow="hover"
-        >
-          <div class="stat-content">
-            <el-icon
-              class="stat-icon"
-              :size="40"
-              color="#409EFF"
-            >
-              <User />
-            </el-icon>
-            <div class="stat-info">
-              <div class="stat-value">
-                1,234
-              </div>
-              <div class="stat-label">
-                Total Patients
-              </div>
-            </div>
-          </div>
-        </el-card>
+        <StatCard
+          :icon="User"
+          :value="dashboardStats?.totalPatients ?? 0"
+          label="Total Patients"
+          icon-color="#409EFF"
+          icon-bg-color="rgba(64, 158, 255, 0.1)"
+          :loading="loading"
+          :show-trend="true"
+          :trend="patientGrowthRate"
+          trend-label="this month"
+        />
       </el-col>
 
       <el-col
@@ -47,28 +37,14 @@
         :sm="12"
         :md="6"
       >
-        <el-card
-          class="stat-card"
-          shadow="hover"
-        >
-          <div class="stat-content">
-            <el-icon
-              class="stat-icon"
-              :size="40"
-              color="#67C23A"
-            >
-              <Document />
-            </el-icon>
-            <div class="stat-info">
-              <div class="stat-value">
-                5,678
-              </div>
-              <div class="stat-label">
-                Medical Records
-              </div>
-            </div>
-          </div>
-        </el-card>
+        <StatCard
+          :icon="Document"
+          :value="dashboardStats?.totalMedicalRecords ?? 0"
+          label="Medical Records"
+          icon-color="#67C23A"
+          icon-bg-color="rgba(103, 194, 58, 0.1)"
+          :loading="loading"
+        />
       </el-col>
 
       <el-col
@@ -76,28 +52,14 @@
         :sm="12"
         :md="6"
       >
-        <el-card
-          class="stat-card"
-          shadow="hover"
-        >
-          <div class="stat-content">
-            <el-icon
-              class="stat-icon"
-              :size="40"
-              color="#E6A23C"
-            >
-              <UserFilled />
-            </el-icon>
-            <div class="stat-info">
-              <div class="stat-value">
-                56
-              </div>
-              <div class="stat-label">
-                Doctors
-              </div>
-            </div>
-          </div>
-        </el-card>
+        <StatCard
+          :icon="UserFilled"
+          :value="dashboardStats?.totalDoctors ?? 0"
+          label="Doctors"
+          icon-color="#E6A23C"
+          icon-bg-color="rgba(230, 162, 60, 0.1)"
+          :loading="loading"
+        />
       </el-col>
 
       <el-col
@@ -105,31 +67,84 @@
         :sm="12"
         :md="6"
       >
-        <el-card
-          class="stat-card"
-          shadow="hover"
-        >
-          <div class="stat-content">
-            <el-icon
-              class="stat-icon"
-              :size="40"
-              color="#F56C6C"
-            >
-              <OfficeBuilding />
-            </el-icon>
-            <div class="stat-info">
-              <div class="stat-value">
-                12
-              </div>
-              <div class="stat-label">
-                Departments
-              </div>
-            </div>
-          </div>
-        </el-card>
+        <StatCard
+          :icon="OfficeBuilding"
+          :value="dashboardStats?.totalDepartments ?? 0"
+          label="Departments"
+          icon-color="#F56C6C"
+          icon-bg-color="rgba(245, 108, 108, 0.1)"
+          :loading="loading"
+        />
       </el-col>
     </el-row>
 
+    <!-- Secondary Stats -->
+    <el-row
+      :gutter="20"
+      class="stats-row"
+    >
+      <el-col
+        :xs="24"
+        :sm="12"
+        :md="6"
+      >
+        <StatCard
+          :icon="Calendar"
+          :value="dashboardStats?.todayVisits ?? 0"
+          label="Today's Visits"
+          icon-color="#9B59B6"
+          icon-bg-color="rgba(155, 89, 182, 0.1)"
+          :loading="loading"
+        />
+      </el-col>
+
+      <el-col
+        :xs="24"
+        :sm="12"
+        :md="6"
+      >
+        <StatCard
+          :icon="TrendCharts"
+          :value="dashboardStats?.monthlyVisits ?? 0"
+          label="Monthly Visits"
+          icon-color="#1ABC9C"
+          icon-bg-color="rgba(26, 188, 156, 0.1)"
+          :loading="loading"
+        />
+      </el-col>
+
+      <el-col
+        :xs="24"
+        :sm="12"
+        :md="6"
+      >
+        <StatCard
+          :icon="Plus"
+          :value="dashboardStats?.newPatientsThisMonth ?? 0"
+          label="New Patients (Month)"
+          icon-color="#3498DB"
+          icon-bg-color="rgba(52, 152, 219, 0.1)"
+          :loading="loading"
+        />
+      </el-col>
+
+      <el-col
+        :xs="24"
+        :sm="12"
+        :md="6"
+      >
+        <StatCard
+          :icon="Clock"
+          :value="dashboardStats?.pendingRecords ?? 0"
+          label="Pending Records"
+          icon-color="#E74C3C"
+          icon-bg-color="rgba(231, 76, 60, 0.1)"
+          :loading="loading"
+        />
+      </el-col>
+    </el-row>
+
+    <!-- Charts Row -->
     <el-row
       :gutter="20"
       class="content-row"
@@ -144,10 +159,101 @@
         >
           <template #header>
             <div class="card-header">
-              <span>Recent Activities</span>
+              <span>Visit Trend (Last 30 Days)</span>
+              <el-button
+                text
+                type="primary"
+                @click="navigateToStatistics"
+              >
+                View Details
+              </el-button>
             </div>
           </template>
-          <el-empty description="No recent activities" />
+          <div
+            v-loading="trendLoading"
+            class="chart-wrapper"
+          >
+            <LineChart
+              v-if="visitTrendData.xAxis.length > 0"
+              :x-axis-data="visitTrendData.xAxis"
+              :series="visitTrendData.series"
+              height="300px"
+              y-axis-name="Visits"
+            />
+            <el-empty
+              v-else
+              description="No visit data available"
+            />
+          </div>
+        </el-card>
+      </el-col>
+
+      <el-col
+        :xs="24"
+        :lg="8"
+      >
+        <el-card
+          class="content-card"
+          shadow="hover"
+        >
+          <template #header>
+            <div class="card-header">
+              <span>Visit Types Distribution</span>
+            </div>
+          </template>
+          <div
+            v-loading="statsLoading"
+            class="chart-wrapper"
+          >
+            <PieChart
+              v-if="visitTypeData.length > 0"
+              :data="visitTypeData"
+              height="300px"
+              :radius="['40%', '70%']"
+            />
+            <el-empty
+              v-else
+              description="No visit type data available"
+            />
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <!-- Department and Quick Actions Row -->
+    <el-row
+      :gutter="20"
+      class="content-row"
+    >
+      <el-col
+        :xs="24"
+        :lg="16"
+      >
+        <el-card
+          class="content-card"
+          shadow="hover"
+        >
+          <template #header>
+            <div class="card-header">
+              <span>Department Statistics</span>
+            </div>
+          </template>
+          <div
+            v-loading="deptLoading"
+            class="chart-wrapper"
+          >
+            <BarChart
+              v-if="departmentChartData.xAxis.length > 0"
+              :x-axis-data="departmentChartData.xAxis"
+              :series="departmentChartData.series"
+              height="300px"
+              y-axis-name="Count"
+            />
+            <el-empty
+              v-else
+              description="No department data available"
+            />
+          </div>
         </el-card>
       </el-col>
 
@@ -168,26 +274,34 @@
             <el-button
               type="primary"
               class="action-btn"
-              disabled
+              @click="navigateTo('/patients')"
             >
-              <el-icon><Plus /></el-icon>
-              New Patient
+              <el-icon><User /></el-icon>
+              Manage Patients
             </el-button>
             <el-button
               type="success"
               class="action-btn"
-              disabled
+              @click="navigateTo('/medical-records')"
             >
               <el-icon><Document /></el-icon>
-              New Record
+              Medical Records
             </el-button>
             <el-button
               type="warning"
               class="action-btn"
-              disabled
+              @click="navigateTo('/doctors')"
             >
-              <el-icon><Search /></el-icon>
-              Search Records
+              <el-icon><UserFilled /></el-icon>
+              Manage Doctors
+            </el-button>
+            <el-button
+              type="info"
+              class="action-btn"
+              @click="navigateToStatistics"
+            >
+              <el-icon><DataAnalysis /></el-icon>
+              View Statistics
             </el-button>
           </div>
         </el-card>
@@ -197,10 +311,182 @@
 </template>
 
 <script setup lang="ts">
-import { User, Document, UserFilled, OfficeBuilding, Plus, Search } from '@element-plus/icons-vue';
-import { useAuthStore } from '@/stores/auth';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import {
+  User,
+  Document,
+  UserFilled,
+  OfficeBuilding,
+  Plus,
+  Calendar,
+  TrendCharts,
+  Clock,
+  DataAnalysis,
+} from '@element-plus/icons-vue';
+import { useAuthStore, useStatisticsStore } from '@/stores';
+import { StatCard, LineChart, PieChart, BarChart } from '@/components/charts';
 
+const router = useRouter();
 const authStore = useAuthStore();
+const statisticsStore = useStatisticsStore();
+
+// Loading states
+const loading = ref(false);
+const trendLoading = ref(false);
+const statsLoading = ref(false);
+const deptLoading = ref(false);
+
+// Computed
+const dashboardStats = computed(() => statisticsStore.dashboardStats);
+const patientGrowthRate = computed(() => {
+  const stats = statisticsStore.patientStats;
+  return stats?.growthRate ?? 0;
+});
+
+// Visit trend chart data
+const visitTrendData = computed(() => {
+  const trend = statisticsStore.visitTrend;
+  if (!trend || trend.length === 0) {
+    return { xAxis: [], series: [] };
+  }
+
+  return {
+    xAxis: trend.map((t) => t.date.slice(5)), // MM-DD format
+    series: [
+      {
+        name: 'Total',
+        data: trend.map((t) => t.count),
+        color: '#409EFF',
+        smooth: true,
+        areaStyle: true,
+      },
+      {
+        name: 'Outpatient',
+        data: trend.map((t) => t.outpatient),
+        color: '#67C23A',
+        smooth: true,
+      },
+      {
+        name: 'Emergency',
+        data: trend.map((t) => t.emergency),
+        color: '#F56C6C',
+        smooth: true,
+      },
+    ],
+  };
+});
+
+// Visit type pie chart data
+const visitTypeData = computed(() => {
+  const stats = statisticsStore.visitStats;
+  if (!stats?.visitsByType) {
+    return [];
+  }
+
+  const typeLabels: Record<string, string> = {
+    outpatient: 'Outpatient',
+    emergency: 'Emergency',
+    inpatient: 'Inpatient',
+    unknown: 'Unknown',
+  };
+
+  return Object.entries(stats.visitsByType).map(([key, value]) => ({
+    name: typeLabels[key] || key,
+    value,
+  }));
+});
+
+// Department bar chart data
+const departmentChartData = computed(() => {
+  const depts = statisticsStore.departmentStats;
+  if (!depts || depts.length === 0) {
+    return { xAxis: [], series: [] };
+  }
+
+  // Take top 8 departments
+  const topDepts = depts.slice(0, 8);
+
+  return {
+    xAxis: topDepts.map((d) => d.name),
+    series: [
+      {
+        name: 'Records',
+        data: topDepts.map((d) => d.recordCount),
+        color: '#409EFF',
+      },
+      {
+        name: 'Doctors',
+        data: topDepts.map((d) => d.doctorCount),
+        color: '#67C23A',
+      },
+    ],
+  };
+});
+
+// Methods
+function navigateTo(path: string): void {
+  router.push(path);
+}
+
+function navigateToStatistics(): void {
+  router.push('/statistics');
+}
+
+async function loadDashboardData(): Promise<void> {
+  loading.value = true;
+  try {
+    await Promise.all([
+      statisticsStore.fetchDashboardStatistics(),
+      statisticsStore.fetchPatientStatistics(),
+    ]);
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function loadVisitTrend(): Promise<void> {
+  trendLoading.value = true;
+  try {
+    // Get last 30 days
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 30);
+
+    await statisticsStore.fetchVisitTrend({
+      startDate: startDate.toISOString().split('T')[0],
+      endDate: endDate.toISOString().split('T')[0],
+    });
+  } finally {
+    trendLoading.value = false;
+  }
+}
+
+async function loadVisitStats(): Promise<void> {
+  statsLoading.value = true;
+  try {
+    await statisticsStore.fetchVisitStatistics();
+  } finally {
+    statsLoading.value = false;
+  }
+}
+
+async function loadDepartmentStats(): Promise<void> {
+  deptLoading.value = true;
+  try {
+    await statisticsStore.fetchDepartmentStatistics();
+  } finally {
+    deptLoading.value = false;
+  }
+}
+
+// Lifecycle
+onMounted(() => {
+  loadDashboardData();
+  loadVisitTrend();
+  loadVisitStats();
+  loadDepartmentStats();
+});
 </script>
 
 <style scoped>
@@ -209,7 +495,7 @@ const authStore = useAuthStore();
 }
 
 .welcome-section {
-  margin-bottom: 30px;
+  margin-bottom: 24px;
 }
 
 .welcome-title {
@@ -229,44 +515,17 @@ const authStore = useAuthStore();
   margin-bottom: 20px;
 }
 
-.stat-card {
+.stats-row .el-col {
   margin-bottom: 20px;
-}
-
-.stat-content {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.stat-icon {
-  flex-shrink: 0;
-}
-
-.stat-info {
-  flex: 1;
-}
-
-.stat-value {
-  font-size: 28px;
-  font-weight: 600;
-  color: #303133;
-  line-height: 1.2;
-}
-
-.stat-label {
-  font-size: 14px;
-  color: #909399;
-  margin-top: 4px;
 }
 
 .content-row {
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .content-card {
-  margin-bottom: 20px;
-  min-height: 300px;
+  height: 100%;
+  min-height: 380px;
 }
 
 .card-header {
@@ -276,14 +535,23 @@ const authStore = useAuthStore();
   font-weight: 600;
 }
 
+.chart-wrapper {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .quick-actions {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 10px 0;
 }
 
 .action-btn {
   width: 100%;
   justify-content: flex-start;
+  height: 44px;
 }
 </style>

@@ -6,6 +6,7 @@ import departmentRoutes from './department.routes';
 import medicalRecordRoutes from './medicalRecord.routes';
 import prescriptionRoutes from './prescription.routes';
 import attachmentRoutes from './attachment.routes';
+import statisticsRoutes from './statistics.routes';
 
 const router = Router();
 
@@ -30,5 +31,6 @@ router.use('/departments', departmentRoutes);
 router.use('/medical-records', medicalRecordRoutes);
 router.use('/prescriptions', prescriptionRoutes);
 router.use('/attachments', attachmentRoutes);
+router.use('/statistics', statisticsRoutes);
 
 export default router;

@@ -4,3 +4,4 @@ export { doctorController, DoctorController, departmentController, DepartmentCon
 export { medicalRecordController, MedicalRecordController } from './medicalRecord.controller';
 export { prescriptionController, PrescriptionController } from './prescription.controller';
 export { attachmentController, AttachmentController } from './attachment.controller';
+export { statisticsController, StatisticsController } from './statistics.controller';

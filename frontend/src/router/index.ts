@@ -79,6 +79,14 @@ const routes: RouteRecordRaw[] = [
           title: 'Medical Record Details',
         },
       },
+      {
+        path: 'statistics',
+        name: 'Statistics',
+        component: () => import('@/views/statistics/Statistics.vue'),
+        meta: {
+          title: 'Statistics & Analytics',
+        },
+      },
     ],
   },
   {

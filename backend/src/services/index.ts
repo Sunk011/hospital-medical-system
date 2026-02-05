@@ -5,3 +5,4 @@ export { departmentService, DepartmentService } from './department.service';
 export { medicalRecordService, MedicalRecordService } from './medicalRecord.service';
 export { prescriptionService, PrescriptionService } from './prescription.service';
 export { attachmentService, AttachmentService } from './attachment.service';
+export { statisticsService, StatisticsService } from './statistics.service';

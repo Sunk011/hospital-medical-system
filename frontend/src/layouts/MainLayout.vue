@@ -67,7 +67,6 @@
 
         <el-menu-item
           index="/statistics"
-          disabled
         >
           <el-icon><DataAnalysis /></el-icon>
           <template #title>

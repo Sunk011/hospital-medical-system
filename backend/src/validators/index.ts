@@ -4,3 +4,4 @@ export * from './doctor.validator';
 export * from './medicalRecord.validator';
 export * from './prescription.validator';
 export * from './attachment.validator';
+export * from './statistics.validator';
