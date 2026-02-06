@@ -109,7 +109,7 @@ import { useI18n } from 'vue-i18n';
 import { Download } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import { useStatisticsStore } from '@/stores';
-import { logger } from '@/utils';
+import { downloadReportAsCSV } from '@/utils/reportDownload';
 import type { DateRangeFilter } from '@/types';
 import OverviewTab from './tabs/OverviewTab.vue';
 import VisitsTab from './tabs/VisitsTab.vue';
@@ -250,9 +250,8 @@ async function generateReport(): Promise<void> {
   try {
     const success = await statisticsStore.fetchReport(dateFilter.value);
     if (success && statisticsStore.report) {
-      ElMessage.success(t('statistics.reportGeneratedSuccess'));
-      // In a real app, you might download the report as PDF/Excel
-      logger.info('Report data:', statisticsStore.report);
+      downloadReportAsCSV(statisticsStore.report);
+      ElMessage.success(t('statistics.reportDownloadSuccess'));
     } else {
       ElMessage.error(t('statistics.reportGeneratedFail'));
     }
