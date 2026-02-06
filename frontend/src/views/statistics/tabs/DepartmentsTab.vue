@@ -14,19 +14,19 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Records by Department</span>
+            <span class="card-title">{{ t('statistics.recordsByDepartment') }}</span>
           </template>
           <BarChart
             v-if="recordsByDeptData.xAxis.length > 0"
             :x-axis-data="recordsByDeptData.xAxis"
             :series="recordsByDeptData.series"
             height="350px"
-            y-axis-name="Records"
+            :y-axis-name="t('statistics.records')"
             :horizontal="true"
           />
           <el-empty
             v-else
-            description="No department data available"
+            :description="t('statistics.noDeptData')"
           />
         </el-card>
       </el-col>
@@ -36,19 +36,19 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Doctors by Department</span>
+            <span class="card-title">{{ t('statistics.doctorsByDepartment') }}</span>
           </template>
           <BarChart
             v-if="doctorsByDeptData.xAxis.length > 0"
             :x-axis-data="doctorsByDeptData.xAxis"
             :series="doctorsByDeptData.series"
             height="350px"
-            y-axis-name="Doctors"
+            :y-axis-name="t('statistics.doctors')"
             :horizontal="true"
           />
           <el-empty
             v-else
-            description="No department data available"
+            :description="t('statistics.noDeptData')"
           />
         </el-card>
       </el-col>
@@ -65,7 +65,7 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Record Distribution</span>
+            <span class="card-title">{{ t('statistics.recordDistribution') }}</span>
           </template>
           <PieChart
             v-if="recordDistributionData.length > 0"
@@ -74,7 +74,7 @@
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('statistics.noDataAvailable')"
           />
         </el-card>
       </el-col>
@@ -84,7 +84,7 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Patient Distribution</span>
+            <span class="card-title">{{ t('statistics.patientDistribution') }}</span>
           </template>
           <PieChart
             v-if="patientDistributionData.length > 0"
@@ -93,7 +93,7 @@
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('statistics.noDataAvailable')"
           />
         </el-card>
       </el-col>
@@ -102,7 +102,7 @@
     <!-- Department Table -->
     <el-card shadow="never">
       <template #header>
-        <span class="card-title">Department Details</span>
+        <span class="card-title">{{ t('statistics.departmentDetails') }}</span>
       </template>
       <el-table
         :data="departmentStats"
@@ -111,12 +111,12 @@
       >
         <el-table-column
           prop="name"
-          label="Department"
+          :label="t('statistics.department')"
           min-width="150"
         />
         <el-table-column
           prop="code"
-          label="Code"
+          :label="t('statistics.code')"
           width="100"
         >
           <template #default="{ row }">
@@ -125,7 +125,7 @@
         </el-table-column>
         <el-table-column
           prop="doctorCount"
-          label="Doctors"
+          :label="t('statistics.doctors')"
           width="100"
           align="center"
         >
@@ -137,7 +137,7 @@
         </el-table-column>
         <el-table-column
           prop="recordCount"
-          label="Records"
+          :label="t('statistics.records')"
           width="100"
           align="center"
         >
@@ -149,7 +149,7 @@
         </el-table-column>
         <el-table-column
           prop="patientCount"
-          label="Patients"
+          :label="t('statistics.patients')"
           width="100"
           align="center"
         >
@@ -160,7 +160,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Avg Records/Doctor"
+          :label="t('statistics.avgRecordsPerDoctor')"
           width="150"
           align="center"
         >
@@ -175,8 +175,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useStatisticsStore } from '@/stores';
 import { BarChart, PieChart } from '@/components/charts';
+
+const { t } = useI18n();
 
 // Props
 interface Props {
@@ -205,7 +208,7 @@ const recordsByDeptData = computed(() => {
     xAxis: sorted.map((d) => d.name),
     series: [
       {
-        name: 'Records',
+        name: t('statistics.records'),
         data: sorted.map((d) => d.recordCount),
         color: '#409EFF',
       },
@@ -226,7 +229,7 @@ const doctorsByDeptData = computed(() => {
     xAxis: sorted.map((d) => d.name),
     series: [
       {
-        name: 'Doctors',
+        name: t('statistics.doctors'),
         data: sorted.map((d) => d.doctorCount),
         color: '#67C23A',
       },

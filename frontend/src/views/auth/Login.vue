@@ -53,9 +53,9 @@
 
       <div class="login-footer">
         <p class="demo-accounts">
-          Demo accounts:<br>
-          Admin: admin / admin123<br>
-          Doctor: doctor1 / doctor123
+          {{ $t('auth.demoAccounts') }}:<br>
+          {{ $t('auth.admin') }}: admin / admin123<br>
+          {{ $t('auth.doctor') }}: doctor1 / doctor123
         </p>
       </div>
     </div>
@@ -65,6 +65,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { User, Lock } from '@element-plus/icons-vue';
 import { useAuthStore } from '@/stores/auth';
@@ -73,6 +74,7 @@ import { logger } from '@/utils';
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
+const { t } = useI18n();
 
 const loginFormRef = ref<FormInstance>();
 const loading = ref(false);
@@ -84,12 +86,12 @@ const loginForm = reactive({
 
 const loginRules: FormRules = {
   username: [
-    { required: true, message: 'Username is required', trigger: 'blur' },
-    { min: 3, max: 50, message: 'Username must be 3-50 characters', trigger: 'blur' },
+    { required: true, message: () => t('auth.usernameRequired'), trigger: 'blur' },
+    { min: 3, max: 50, message: () => t('auth.usernameLength'), trigger: 'blur' },
   ],
   password: [
-    { required: true, message: 'Password is required', trigger: 'blur' },
-    { min: 6, max: 100, message: 'Password must be 6-100 characters', trigger: 'blur' },
+    { required: true, message: () => t('auth.passwordRequired'), trigger: 'blur' },
+    { min: 6, max: 100, message: () => t('auth.passwordLength'), trigger: 'blur' },
   ],
 };
 
@@ -106,11 +108,11 @@ async function handleLogin() {
     });
 
     if (success) {
-      ElMessage.success('Login successful');
+      ElMessage.success(t('auth.loginSuccess'));
       const redirect = (route.query.redirect as string) || '/';
       router.push(redirect);
     } else {
-      ElMessage.error('Login failed');
+      ElMessage.error(t('auth.loginFailed'));
     }
   } catch (error) {
     logger.error('Login error', error);

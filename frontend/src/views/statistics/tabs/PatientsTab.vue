@@ -16,7 +16,7 @@
         <StatCard
           :icon="User"
           :value="patientStats?.totalPatients ?? 0"
-          label="Total Patients"
+          :label="t('statistics.totalPatients')"
           icon-color="#409EFF"
           icon-bg-color="rgba(64, 158, 255, 0.1)"
         />
@@ -29,12 +29,12 @@
         <StatCard
           :icon="Plus"
           :value="patientStats?.newPatientsThisMonth ?? 0"
-          label="New This Month"
+          :label="t('statistics.newThisMonth')"
           icon-color="#67C23A"
           icon-bg-color="rgba(103, 194, 58, 0.1)"
           :show-trend="true"
           :trend="patientStats?.growthRate ?? 0"
-          trend-label="vs last month"
+          :trend-label="t('statistics.vsLastMonth')"
         />
       </el-col>
       <el-col
@@ -45,7 +45,7 @@
         <StatCard
           :icon="Calendar"
           :value="patientStats?.newPatientsLastMonth ?? 0"
-          label="New Last Month"
+          :label="t('statistics.newLastMonth')"
           icon-color="#E6A23C"
           icon-bg-color="rgba(230, 162, 60, 0.1)"
         />
@@ -58,7 +58,7 @@
         <StatCard
           :icon="TrendCharts"
           :value="growthRateDisplay"
-          label="Growth Rate"
+          :label="t('statistics.growthRate')"
           icon-color="#F56C6C"
           icon-bg-color="rgba(245, 108, 108, 0.1)"
           suffix="%"
@@ -77,7 +77,7 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Gender Distribution</span>
+            <span class="card-title">{{ t('statistics.genderDistribution') }}</span>
           </template>
           <PieChart
             v-if="genderData.length > 0"
@@ -87,7 +87,7 @@
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('statistics.noDataAvailable')"
           />
         </el-card>
       </el-col>
@@ -97,7 +97,7 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Blood Type Distribution</span>
+            <span class="card-title">{{ t('statistics.bloodTypeDistribution') }}</span>
           </template>
           <PieChart
             v-if="bloodTypeData.length > 0"
@@ -106,7 +106,7 @@
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('statistics.noDataAvailable')"
           />
         </el-card>
       </el-col>
@@ -116,7 +116,7 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Age Distribution</span>
+            <span class="card-title">{{ t('statistics.ageDistribution') }}</span>
           </template>
           <PieChart
             v-if="ageData.length > 0"
@@ -126,7 +126,7 @@
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('statistics.noDataAvailable')"
           />
         </el-card>
       </el-col>
@@ -143,18 +143,18 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Age Group Breakdown</span>
+            <span class="card-title">{{ t('statistics.ageGroupBreakdown') }}</span>
           </template>
           <BarChart
             v-if="ageBarData.xAxis.length > 0"
             :x-axis-data="ageBarData.xAxis"
             :series="ageBarData.series"
             height="300px"
-            y-axis-name="Patients"
+            :y-axis-name="t('statistics.patients')"
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('statistics.noDataAvailable')"
           />
         </el-card>
       </el-col>
@@ -164,18 +164,18 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Blood Type Breakdown</span>
+            <span class="card-title">{{ t('statistics.bloodTypeBreakdown') }}</span>
           </template>
           <BarChart
             v-if="bloodTypeBarData.xAxis.length > 0"
             :x-axis-data="bloodTypeBarData.xAxis"
             :series="bloodTypeBarData.series"
             height="300px"
-            y-axis-name="Patients"
+            :y-axis-name="t('statistics.patients')"
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('statistics.noDataAvailable')"
           />
         </el-card>
       </el-col>
@@ -184,7 +184,7 @@
     <!-- Summary Table -->
     <el-card shadow="never">
       <template #header>
-        <span class="card-title">Patient Demographics Summary</span>
+        <span class="card-title">{{ t('statistics.patientDemographics') }}</span>
       </template>
       <el-row :gutter="20">
         <el-col
@@ -192,7 +192,7 @@
           :md="8"
         >
           <h4 class="summary-title">
-            Gender
+            {{ t('statistics.gender') }}
           </h4>
           <el-table
             :data="genderTableData"
@@ -201,16 +201,16 @@
           >
             <el-table-column
               prop="name"
-              label="Gender"
+              :label="t('statistics.gender')"
             />
             <el-table-column
               prop="count"
-              label="Count"
+              :label="t('statistics.count')"
               align="right"
             />
             <el-table-column
               prop="percentage"
-              label="%"
+              :label="t('statistics.percentage')"
               align="right"
             >
               <template #default="{ row }">
@@ -224,7 +224,7 @@
           :md="8"
         >
           <h4 class="summary-title">
-            Blood Type
+            {{ t('statistics.bloodType') }}
           </h4>
           <el-table
             :data="bloodTypeTableData"
@@ -233,16 +233,16 @@
           >
             <el-table-column
               prop="name"
-              label="Type"
+              :label="t('statistics.bloodType')"
             />
             <el-table-column
               prop="count"
-              label="Count"
+              :label="t('statistics.count')"
               align="right"
             />
             <el-table-column
               prop="percentage"
-              label="%"
+              :label="t('statistics.percentage')"
               align="right"
             >
               <template #default="{ row }">
@@ -256,7 +256,7 @@
           :md="8"
         >
           <h4 class="summary-title">
-            Age Group
+            {{ t('statistics.ageGroup') }}
           </h4>
           <el-table
             :data="ageTableData"
@@ -265,16 +265,16 @@
           >
             <el-table-column
               prop="name"
-              label="Age"
+              :label="t('statistics.ageGroup')"
             />
             <el-table-column
               prop="count"
-              label="Count"
+              :label="t('statistics.count')"
               align="right"
             />
             <el-table-column
               prop="percentage"
-              label="%"
+              :label="t('statistics.percentage')"
               align="right"
             >
               <template #default="{ row }">
@@ -290,6 +290,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { User, Plus, Calendar, TrendCharts } from '@element-plus/icons-vue';
 import { useStatisticsStore } from '@/stores';
 import { StatCard, PieChart, BarChart } from '@/components/charts';
@@ -304,6 +305,7 @@ withDefaults(defineProps<Props>(), {
 });
 
 const statisticsStore = useStatisticsStore();
+const { t } = useI18n();
 
 // Computed
 const patientStats = computed(() => statisticsStore.patientStats);
@@ -313,10 +315,13 @@ const growthRateDisplay = computed(() => {
   return rate >= 0 ? `+${rate}` : rate.toString();
 });
 
-const genderLabels: Record<string, string> = {
-  M: 'Male',
-  F: 'Female',
-  Unknown: 'Unknown',
+const getGenderLabel = (key: string): string => {
+  const labels: Record<string, string> = {
+    M: t('statistics.male'),
+    F: t('statistics.female'),
+    Unknown: t('statistics.unknown'),
+  };
+  return labels[key] || key;
 };
 
 const genderData = computed(() => {
@@ -324,7 +329,7 @@ const genderData = computed(() => {
   if (!dist) return [];
 
   return Object.entries(dist).map(([key, value]) => ({
-    name: genderLabels[key] || key,
+    name: getGenderLabel(key),
     value,
   }));
 });
@@ -334,7 +339,7 @@ const bloodTypeData = computed(() => {
   if (!dist) return [];
 
   return Object.entries(dist).map(([key, value]) => ({
-    name: `Type ${key}`,
+    name: `${t('statistics.bloodType')} ${key}`,
     value,
   }));
 });
@@ -358,7 +363,7 @@ const ageBarData = computed(() => {
     xAxis: entries.map(([key]) => key),
     series: [
       {
-        name: 'Patients',
+        name: t('statistics.patients'),
         data: entries.map(([, value]) => value),
         color: '#409EFF',
       },
@@ -375,7 +380,7 @@ const bloodTypeBarData = computed(() => {
     xAxis: entries.map(([key]) => key),
     series: [
       {
-        name: 'Patients',
+        name: t('statistics.patients'),
         data: entries.map(([, value]) => value),
         color: '#F56C6C',
       },
@@ -390,7 +395,7 @@ const genderTableData = computed(() => {
 
   const total = Object.values(dist).reduce((a, b) => a + b, 0);
   return Object.entries(dist).map(([key, value]) => ({
-    name: genderLabels[key] || key,
+    name: getGenderLabel(key),
     count: value,
     percentage: total > 0 ? ((value / total) * 100).toFixed(1) : 0,
   }));

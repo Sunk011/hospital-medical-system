@@ -2,13 +2,13 @@
   <div class="medical-record-list-page">
     <!-- Page Header -->
     <div class="page-header">
-      <h2>Medical Record Management</h2>
+      <h2>{{ $t('medicalRecord.title') }}</h2>
       <el-button
         type="primary"
         :icon="Plus"
         @click="handleCreate"
       >
-        New Record
+        {{ $t('medicalRecord.newRecord') }}
       </el-button>
     </div>
 
@@ -19,34 +19,34 @@
         inline
         @submit.prevent="handleSearch"
       >
-        <el-form-item label="Record No.">
+        <el-form-item :label="$t('medicalRecord.recordNo')">
           <el-input
             v-model="searchForm.recordNo"
-            placeholder="Record number"
+            :placeholder="$t('medicalRecord.searchRecordNo')"
             clearable
             @clear="handleSearch"
           />
         </el-form-item>
-        <el-form-item label="Patient">
+        <el-form-item :label="$t('medicalRecord.patient')">
           <el-input
             v-model="searchForm.patientName"
-            placeholder="Patient name"
+            :placeholder="$t('medicalRecord.searchPatient')"
             clearable
             @clear="handleSearch"
           />
         </el-form-item>
-        <el-form-item label="Doctor">
+        <el-form-item :label="$t('medicalRecord.doctor')">
           <el-input
             v-model="searchForm.doctorName"
-            placeholder="Doctor name"
+            :placeholder="$t('medicalRecord.searchDoctor')"
             clearable
             @clear="handleSearch"
           />
         </el-form-item>
-        <el-form-item label="Visit Type">
+        <el-form-item :label="$t('medicalRecord.visitType')">
           <el-select
             v-model="searchForm.visitType"
-            placeholder="All"
+            :placeholder="$t('medicalRecord.selectVisitType')"
             clearable
             @change="handleSearch"
           >
@@ -58,10 +58,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Status">
+        <el-form-item :label="$t('common.status')">
           <el-select
             v-model="searchForm.status"
-            placeholder="All"
+            :placeholder="$t('medicalRecord.selectStatus')"
             clearable
             @change="handleSearch"
           >
@@ -73,13 +73,13 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Date Range">
+        <el-form-item :label="$t('medicalRecord.dateRange')">
           <el-date-picker
             v-model="dateRange"
             type="daterange"
-            range-separator="to"
-            start-placeholder="Start date"
-            end-placeholder="End date"
+            :range-separator="$t('common.to')"
+            :start-placeholder="$t('medicalRecord.startDate')"
+            :end-placeholder="$t('medicalRecord.endDate')"
             value-format="YYYY-MM-DD"
             @change="handleDateRangeChange"
           />
@@ -90,13 +90,13 @@
             :icon="Search"
             @click="handleSearch"
           >
-            Search
+            {{ $t('common.search') }}
           </el-button>
           <el-button
             :icon="Refresh"
             @click="handleReset"
           >
-            Reset
+            {{ $t('common.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -113,12 +113,12 @@
       >
         <el-table-column
           prop="recordNo"
-          label="Record No."
+          :label="$t('medicalRecord.recordNo')"
           width="200"
           fixed="left"
         />
         <el-table-column
-          label="Patient"
+          :label="$t('medicalRecord.patient')"
           width="120"
         >
           <template #default="{ row }">
@@ -126,7 +126,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Doctor"
+          :label="$t('medicalRecord.doctor')"
           width="120"
         >
           <template #default="{ row }">
@@ -134,7 +134,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Department"
+          :label="$t('medicalRecord.department')"
           width="120"
         >
           <template #default="{ row }">
@@ -143,7 +143,7 @@
         </el-table-column>
         <el-table-column
           prop="visitType"
-          label="Visit Type"
+          :label="$t('medicalRecord.visitType')"
           width="110"
           align="center"
         >
@@ -160,7 +160,7 @@
         </el-table-column>
         <el-table-column
           prop="visitDate"
-          label="Visit Date"
+          :label="$t('medicalRecord.visitDate')"
           width="120"
         >
           <template #default="{ row }">
@@ -169,7 +169,7 @@
         </el-table-column>
         <el-table-column
           prop="diagnosis"
-          label="Diagnosis"
+          :label="$t('medicalRecord.diagnosis')"
           min-width="200"
           show-overflow-tooltip
         >
@@ -179,7 +179,7 @@
         </el-table-column>
         <el-table-column
           prop="status"
-          label="Status"
+          :label="$t('common.status')"
           width="100"
           align="center"
         >
@@ -193,7 +193,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Actions"
+          :label="$t('common.actions')"
           width="280"
           fixed="right"
           align="center"
@@ -205,7 +205,7 @@
               :icon="View"
               @click="handleView(row)"
             >
-              View
+              {{ $t('common.view') }}
             </el-button>
             <el-button
               v-if="row.status === 'draft'"
@@ -214,7 +214,7 @@
               :icon="Edit"
               @click="handleEdit(row)"
             >
-              Edit
+              {{ $t('common.edit') }}
             </el-button>
             <el-dropdown
               v-if="row.status !== 'archived'"
@@ -225,7 +225,7 @@
                 size="small"
                 :icon="More"
               >
-                More
+                {{ $t('common.more') }}
               </el-button>
               <template #dropdown>
                 <el-dropdown-menu>
@@ -233,20 +233,20 @@
                     v-if="row.status === 'draft'"
                     command="confirmed"
                   >
-                    Confirm Record
+                    {{ $t('medicalRecord.confirmRecord') }}
                   </el-dropdown-item>
                   <el-dropdown-item
                     v-if="row.status === 'confirmed'"
                     command="archived"
                   >
-                    Archive Record
+                    {{ $t('medicalRecord.archiveRecord') }}
                   </el-dropdown-item>
                   <el-dropdown-item
                     v-if="row.status === 'draft'"
                     command="delete"
                     divided
                   >
-                    <span class="text-danger">Delete Record</span>
+                    <span class="text-danger">{{ $t('medicalRecord.deleteRecord') }}</span>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -282,6 +282,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import {
   Plus,
@@ -307,6 +308,7 @@ import {
 import MedicalRecordFormDialog from './components/MedicalRecordFormDialog.vue';
 
 const router = useRouter();
+const { t } = useI18n();
 const medicalRecordStore = useMedicalRecordStore();
 
 // Search form
@@ -346,14 +348,22 @@ function formatDate(dateStr: string): string {
 
 // Get visit type label
 function getVisitTypeLabel(type: string): string {
-  const option = visitTypeOptions.find((o) => o.value === type);
-  return option?.label || type;
+  const labelMap: Record<string, string> = {
+    outpatient: t('medicalRecord.outpatient'),
+    emergency: t('medicalRecord.emergency'),
+    inpatient: t('medicalRecord.inpatient'),
+  };
+  return labelMap[type] || type;
 }
 
 // Get status label
 function getStatusLabel(status: string): string {
-  const option = recordStatusOptions.find((o) => o.value === status);
-  return option?.label || status;
+  const labelMap: Record<string, string> = {
+    draft: t('medicalRecord.draft'),
+    confirmed: t('medicalRecord.confirmed'),
+    archived: t('medicalRecord.archived'),
+  };
+  return labelMap[status] || status;
 }
 
 // Load records
@@ -430,17 +440,17 @@ async function handleStatusChange(record: MedicalRecord, command: string): Promi
   }
 
   const statusLabels: Record<string, string> = {
-    confirmed: 'confirm',
-    archived: 'archive',
+    confirmed: t('medicalRecord.confirmAction'),
+    archived: t('medicalRecord.archiveAction'),
   };
 
   try {
     await ElMessageBox.confirm(
-      `Are you sure you want to ${statusLabels[command]} this record "${record.recordNo}"? This action cannot be undone.`,
-      'Confirm Status Change',
+      t('medicalRecord.statusChangeMsg', { action: statusLabels[command], recordNo: record.recordNo }),
+      t('medicalRecord.statusChangeConfirm'),
       {
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: t('common.confirm'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning',
       }
     );
@@ -450,7 +460,7 @@ async function handleStatusChange(record: MedicalRecord, command: string): Promi
       command as RecordStatus
     );
     if (result) {
-      ElMessage.success(`Record ${statusLabels[command]}ed successfully`);
+      ElMessage.success(t('medicalRecord.statusChangeSuccess'));
     }
   } catch {
     // User cancelled
@@ -460,18 +470,18 @@ async function handleStatusChange(record: MedicalRecord, command: string): Promi
 async function handleDelete(record: MedicalRecord): Promise<void> {
   try {
     await ElMessageBox.confirm(
-      `Are you sure you want to delete record "${record.recordNo}"? This action cannot be undone.`,
-      'Confirm Delete',
+      t('medicalRecord.deleteRecordMsg', { recordNo: record.recordNo }),
+      t('common.confirmDeleteTitle'),
       {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: t('common.delete'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning',
       }
     );
 
     const success = await medicalRecordStore.deleteRecord(record.id);
     if (success) {
-      ElMessage.success('Record deleted successfully');
+      ElMessage.success(t('medicalRecord.recordDeleted'));
     }
   } catch {
     // User cancelled

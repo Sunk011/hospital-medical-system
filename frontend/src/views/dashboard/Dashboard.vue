@@ -389,6 +389,9 @@ import {
 } from '@element-plus/icons-vue';
 import { useAuthStore, useStatisticsStore } from '@/stores';
 import { StatCard, LineChart, PieChart, BarChart } from '@/components/charts';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -418,20 +421,20 @@ const visitTrendData = computed(() => {
     xAxis: trend.map((t) => t.date.slice(5)), // MM-DD format
     series: [
       {
-        name: 'Total',
+        name: t('common.total'),
         data: trend.map((t) => t.count),
         color: '#409EFF',
         smooth: true,
         areaStyle: true,
       },
       {
-        name: 'Outpatient',
+        name: t('medicalRecord.outpatient'),
         data: trend.map((t) => t.outpatient),
         color: '#67C23A',
         smooth: true,
       },
       {
-        name: 'Emergency',
+        name: t('medicalRecord.emergency'),
         data: trend.map((t) => t.emergency),
         color: '#F56C6C',
         smooth: true,
@@ -448,10 +451,10 @@ const visitTypeData = computed(() => {
   }
 
   const typeLabels: Record<string, string> = {
-    outpatient: 'Outpatient',
-    emergency: 'Emergency',
-    inpatient: 'Inpatient',
-    unknown: 'Unknown',
+    outpatient: t('medicalRecord.outpatient'),
+    emergency: t('medicalRecord.emergency'),
+    inpatient: t('medicalRecord.inpatient'),
+    unknown: t('statistics.unknown'),
   };
 
   return Object.entries(stats.visitsByType).map(([key, value]) => ({
@@ -474,12 +477,12 @@ const departmentChartData = computed(() => {
     xAxis: topDepts.map((d) => d.name),
     series: [
       {
-        name: 'Records',
+        name: t('statistics.records'),
         data: topDepts.map((d) => d.recordCount),
         color: '#409EFF',
       },
       {
-        name: 'Doctors',
+        name: t('statistics.doctors'),
         data: topDepts.map((d) => d.doctorCount),
         color: '#67C23A',
       },

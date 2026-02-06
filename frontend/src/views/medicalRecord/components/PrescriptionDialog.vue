@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :model-value="visible"
-    :title="mode === 'create' ? 'Add Prescription' : 'Edit Prescription'"
+    :title="mode === 'create' ? $t('prescription.addPrescription') : $t('prescription.editPrescription')"
     width="600px"
     :close-on-click-modal="false"
     @update:model-value="$emit('update:visible', $event)"
@@ -15,23 +15,23 @@
       @submit.prevent="handleSubmit"
     >
       <el-form-item
-        label="Medicine Name"
+        :label="$t('prescription.medicineName')"
         prop="medicineName"
       >
         <el-input
           v-model="formData.medicineName"
-          placeholder="Enter medicine name"
+          :placeholder="$t('prescription.enterMedicineName')"
           maxlength="100"
         />
       </el-form-item>
 
       <el-form-item
-        label="Specification"
+        :label="$t('prescription.specification')"
         prop="specification"
       >
         <el-input
           v-model="formData.specification"
-          placeholder="e.g., 500mg, 10ml"
+          :placeholder="$t('prescription.enterSpecification')"
           maxlength="100"
         />
       </el-form-item>
@@ -39,74 +39,74 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="Dosage"
+            :label="$t('prescription.dosage')"
             prop="dosage"
           >
             <el-input
               v-model="formData.dosage"
-              placeholder="e.g., 1 tablet, 5ml"
+              :placeholder="$t('prescription.enterDosage')"
               maxlength="50"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="Frequency"
+            :label="$t('prescription.frequency')"
             prop="frequency"
           >
             <el-select
               v-model="formData.frequency"
-              placeholder="Select frequency"
+              :placeholder="$t('prescription.selectFrequency')"
               style="width: 100%"
               allow-create
               filterable
             >
               <el-option
-                label="Once daily"
+                :label="$t('prescription.onceDaily')"
                 value="Once daily"
               />
               <el-option
-                label="Twice daily"
+                :label="$t('prescription.twiceDaily')"
                 value="Twice daily"
               />
               <el-option
-                label="Three times daily"
+                :label="$t('prescription.threeTimesDaily')"
                 value="Three times daily"
               />
               <el-option
-                label="Four times daily"
+                :label="$t('prescription.fourTimesDaily')"
                 value="Four times daily"
               />
               <el-option
-                label="Every 4 hours"
+                :label="$t('prescription.every4Hours')"
                 value="Every 4 hours"
               />
               <el-option
-                label="Every 6 hours"
+                :label="$t('prescription.every6Hours')"
                 value="Every 6 hours"
               />
               <el-option
-                label="Every 8 hours"
+                :label="$t('prescription.every8Hours')"
                 value="Every 8 hours"
               />
               <el-option
-                label="Every 12 hours"
+                :label="$t('prescription.every12Hours')"
                 value="Every 12 hours"
               />
               <el-option
-                label="As needed"
+                :label="$t('prescription.asNeeded')"
                 value="As needed"
               />
               <el-option
-                label="Before meals"
+                :label="$t('prescription.beforeMeals')"
                 value="Before meals"
               />
               <el-option
-                label="After meals"
+                :label="$t('prescription.afterMeals')"
                 value="After meals"
               />
               <el-option
-                label="At bedtime"
+                :label="$t('prescription.atBedtime')"
                 value="At bedtime"
               />
             </el-select>
@@ -117,50 +117,50 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="Duration"
+            :label="$t('prescription.duration')"
             prop="duration"
           >
             <el-select
               v-model="formData.duration"
-              placeholder="Select duration"
+              :placeholder="$t('prescription.selectDuration')"
               style="width: 100%"
               allow-create
               filterable
             >
               <el-option
-                label="3 days"
+                :label="$t('prescription.threeDays')"
                 value="3 days"
               />
               <el-option
-                label="5 days"
+                :label="$t('prescription.fiveDays')"
                 value="5 days"
               />
               <el-option
-                label="7 days"
+                :label="$t('prescription.sevenDays')"
                 value="7 days"
               />
               <el-option
-                label="10 days"
+                :label="$t('prescription.tenDays')"
                 value="10 days"
               />
               <el-option
-                label="14 days"
+                :label="$t('prescription.fourteenDays')"
                 value="14 days"
               />
               <el-option
-                label="1 month"
+                :label="$t('prescription.oneMonth')"
                 value="1 month"
               />
               <el-option
-                label="2 months"
+                :label="$t('prescription.twoMonths')"
                 value="2 months"
               />
               <el-option
-                label="3 months"
+                :label="$t('prescription.threeMonths')"
                 value="3 months"
               />
               <el-option
-                label="Long-term"
+                :label="$t('prescription.longTerm')"
                 value="Long-term"
               />
             </el-select>
@@ -168,14 +168,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="Quantity"
+            :label="$t('prescription.quantity')"
             prop="quantity"
           >
             <el-input-number
               v-model="formData.quantity"
               :min="1"
               :max="9999"
-              placeholder="Quantity"
+              :placeholder="$t('prescription.quantity')"
               style="width: 100%"
             />
           </el-form-item>
@@ -183,14 +183,14 @@
       </el-row>
 
       <el-form-item
-        label="Notes"
+        :label="$t('prescription.notes')"
         prop="notes"
       >
         <el-input
           v-model="formData.notes"
           type="textarea"
           :rows="2"
-          placeholder="Additional instructions or notes"
+          :placeholder="$t('prescription.enterNotes')"
           maxlength="255"
           show-word-limit
         />
@@ -199,14 +199,14 @@
 
     <template #footer>
       <el-button @click="$emit('update:visible', false)">
-        Cancel
+        {{ $t('common.cancel') }}
       </el-button>
       <el-button
         type="primary"
         :loading="submitting"
         @click="handleSubmit"
       >
-        {{ mode === 'create' ? 'Add' : 'Save' }}
+        {{ mode === 'create' ? $t('common.create') : $t('common.save') }}
       </el-button>
     </template>
   </el-dialog>
@@ -214,6 +214,7 @@
 
 <script setup lang="ts">
 import { ref, watch, reactive } from 'vue';
+import { useI18n } from 'vue-i18n';
 import type { FormInstance, FormRules } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { useMedicalRecordStore } from '@/stores/medicalRecord';
@@ -235,6 +236,7 @@ const emit = defineEmits<{
   success: [];
 }>();
 
+const { t } = useI18n();
 const medicalRecordStore = useMedicalRecordStore();
 const formRef = ref<FormInstance>();
 const submitting = ref(false);
@@ -254,26 +256,26 @@ const formData = reactive<PrescriptionFormData>({
 // Validation rules
 const rules: FormRules = {
   medicineName: [
-    { required: true, message: 'Please enter medicine name', trigger: 'blur' },
-    { min: 1, max: 100, message: 'Medicine name must be between 1 and 100 characters', trigger: 'blur' },
+    { required: true, message: () => t('prescription.medicineNameRequired'), trigger: 'blur' },
+    { min: 1, max: 100, message: () => t('prescription.medicineNameLength'), trigger: 'blur' },
   ],
   specification: [
-    { max: 100, message: 'Specification must not exceed 100 characters', trigger: 'blur' },
+    { max: 100, message: () => t('prescription.specificationLength'), trigger: 'blur' },
   ],
   dosage: [
-    { max: 50, message: 'Dosage must not exceed 50 characters', trigger: 'blur' },
+    { max: 50, message: () => t('prescription.dosageLength'), trigger: 'blur' },
   ],
   frequency: [
-    { max: 50, message: 'Frequency must not exceed 50 characters', trigger: 'blur' },
+    { max: 50, message: () => t('prescription.frequencyLength'), trigger: 'blur' },
   ],
   duration: [
-    { max: 50, message: 'Duration must not exceed 50 characters', trigger: 'blur' },
+    { max: 50, message: () => t('prescription.durationLength'), trigger: 'blur' },
   ],
   quantity: [
-    { type: 'number', min: 1, message: 'Quantity must be at least 1', trigger: 'blur' },
+    { type: 'number', min: 1, message: () => t('prescription.quantityMin'), trigger: 'blur' },
   ],
   notes: [
-    { max: 255, message: 'Notes must not exceed 255 characters', trigger: 'blur' },
+    { max: 255, message: () => t('prescription.notesLength'), trigger: 'blur' },
   ],
 };
 
@@ -356,8 +358,8 @@ async function handleSubmit(): Promise<void> {
     if (result) {
       ElMessage.success(
         props.mode === 'create'
-          ? 'Prescription added successfully'
-          : 'Prescription updated successfully'
+          ? t('prescription.addSuccess')
+          : t('prescription.updateSuccess')
       );
       emit('success');
     }

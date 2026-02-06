@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :model-value="visible"
-    :title="mode === 'create' ? 'Add New Doctor' : 'Edit Doctor'"
+    :title="mode === 'create' ? $t('doctor.addDoctor') : $t('doctor.editDoctor')"
     width="700px"
     :close-on-click-modal="false"
     @update:model-value="$emit('update:visible', $event)"
@@ -17,24 +17,24 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="Name"
+            :label="$t('doctor.name')"
             prop="name"
           >
             <el-input
               v-model="formData.name"
-              placeholder="Enter doctor name"
+              :placeholder="$t('doctor.enterName')"
               maxlength="50"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="User Account"
+            :label="$t('doctor.userAccount')"
             prop="userId"
           >
             <el-select
               v-model="formData.userId"
-              placeholder="Select user account"
+              :placeholder="$t('doctor.selectUserAccount')"
               :disabled="mode === 'edit'"
               filterable
               style="width: 100%"
@@ -42,7 +42,7 @@
               <el-option
                 v-for="user in availableUsers"
                 :key="user.id"
-                :label="`${user.username} (${user.email || 'No email'})`"
+                :label="`${user.username} (${user.email || $t('doctor.noEmail')})`"
                 :value="user.id"
               />
             </el-select>
@@ -53,23 +53,23 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="Department"
+            :label="$t('doctor.department')"
             prop="departmentId"
           >
             <DepartmentSelect
               v-model="formData.departmentId"
-              placeholder="Select department"
+              :placeholder="$t('doctor.selectDepartment')"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="Title"
+            :label="$t('doctor.titleLabel')"
             prop="title"
           >
             <el-select
               v-model="formData.title"
-              placeholder="Select title"
+              :placeholder="$t('doctor.selectTitle')"
               clearable
               filterable
               allow-create
@@ -89,24 +89,24 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="License No."
+            :label="$t('doctor.licenseNo')"
             prop="licenseNo"
           >
             <el-input
               v-model="formData.licenseNo"
-              placeholder="Medical license number"
+              :placeholder="$t('doctor.enterLicenseNo')"
               maxlength="50"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="Specialty"
+            :label="$t('doctor.specialty')"
             prop="specialty"
           >
             <el-input
               v-model="formData.specialty"
-              placeholder="e.g., Cardiology, Pediatrics"
+              :placeholder="$t('doctor.enterSpecialty')"
               maxlength="200"
             />
           </el-form-item>
@@ -114,13 +114,13 @@
       </el-row>
 
       <el-form-item
-        label="Introduction"
+        :label="$t('doctor.introduction')"
         prop="introduction"
       >
         <el-input
           v-model="formData.introduction"
           type="textarea"
-          placeholder="Enter doctor's professional introduction, education background, achievements, etc."
+          :placeholder="$t('doctor.enterIntroduction')"
           maxlength="2000"
           :rows="4"
           show-word-limit
@@ -131,14 +131,14 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="$emit('update:visible', false)">
-          Cancel
+          {{ $t('common.cancel') }}
         </el-button>
         <el-button
           type="primary"
           :loading="loading"
           @click="handleSubmit"
         >
-          {{ mode === 'create' ? 'Create' : 'Save' }}
+          {{ mode === 'create' ? $t('common.create') : $t('common.save') }}
         </el-button>
       </span>
     </template>
@@ -146,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, reactive, onMounted } from 'vue';
+import { ref, watch, reactive, onMounted, computed } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { useDoctorStore } from '@/stores/doctor';
@@ -154,6 +154,7 @@ import type { Doctor, DoctorCreateData, DoctorUpdateData } from '@/types';
 import DepartmentSelect from '@/components/common/DepartmentSelect.vue';
 import request from '@/utils/request';
 import { logger } from '@/utils';
+import { useI18n } from 'vue-i18n';
 
 // Props
 const props = defineProps<{
@@ -169,6 +170,7 @@ const emit = defineEmits<{
 }>();
 
 const doctorStore = useDoctorStore();
+const { t } = useI18n();
 const formRef = ref<FormInstance>();
 const loading = ref(false);
 
@@ -176,13 +178,13 @@ const loading = ref(false);
 const availableUsers = ref<Array<{ id: number; username: string; email: string | null }>>([]);
 
 // Doctor titles
-const doctorTitles = [
-  'Chief Physician',
-  'Associate Chief Physician',
-  'Attending Physician',
-  'Resident Physician',
-  'Intern',
-];
+const doctorTitles = computed(() => [
+  t('doctor.chiefPhysician'),
+  t('doctor.assocChiefPhysician'),
+  t('doctor.attendingPhysician'),
+  t('doctor.residentPhysician'),
+  t('doctor.intern'),
+]);
 
 // Form data
 const formData = reactive<DoctorCreateData>({
@@ -203,7 +205,7 @@ const validateLicenseNo = (_rule: unknown, value: string, callback: (error?: Err
   }
   const licenseRegex = /^[A-Za-z0-9-]{5,50}$/;
   if (!licenseRegex.test(value)) {
-    callback(new Error('License number must be 5-50 alphanumeric characters'));
+    callback(new Error(t('doctor.licenseNoFormat')));
   } else {
     callback();
   }
@@ -212,22 +214,22 @@ const validateLicenseNo = (_rule: unknown, value: string, callback: (error?: Err
 // Form rules
 const formRules: FormRules = {
   userId: [
-    { required: true, message: 'User account is required', trigger: 'change' },
+    { required: true, message: () => t('doctor.userAccountRequired'), trigger: 'change' },
   ],
   name: [
-    { required: true, message: 'Name is required', trigger: 'blur' },
-    { min: 2, max: 50, message: 'Name must be 2-50 characters', trigger: 'blur' },
+    { required: true, message: () => t('doctor.nameRequired'), trigger: 'blur' },
+    { min: 2, max: 50, message: () => t('doctor.nameLength'), trigger: 'blur' },
     {
       pattern: /^[\u4e00-\u9fa5a-zA-Z\s]+$/,
-      message: 'Name can only contain Chinese/English characters',
+      message: () => t('doctor.namePattern'),
       trigger: 'blur',
     },
   ],
   licenseNo: [{ validator: validateLicenseNo, trigger: 'blur' }],
-  title: [{ max: 50, message: 'Title must not exceed 50 characters', trigger: 'blur' }],
-  specialty: [{ max: 200, message: 'Specialty must not exceed 200 characters', trigger: 'blur' }],
+  title: [{ max: 50, message: () => t('doctor.titleLength'), trigger: 'blur' }],
+  specialty: [{ max: 200, message: () => t('doctor.specialtyLength'), trigger: 'blur' }],
   introduction: [
-    { max: 2000, message: 'Introduction must not exceed 2000 characters', trigger: 'blur' },
+    { max: 2000, message: () => t('doctor.introductionLength'), trigger: 'blur' },
   ],
 };
 
@@ -313,7 +315,7 @@ async function handleSubmit(): Promise<void> {
     if (props.mode === 'create') {
       const result = await doctorStore.createDoctor(formData);
       if (result) {
-        ElMessage.success('Doctor created successfully');
+        ElMessage.success(t('doctor.doctorCreated'));
         emit('success');
       }
     } else if (props.doctor) {
@@ -327,13 +329,13 @@ async function handleSubmit(): Promise<void> {
       };
       const result = await doctorStore.updateDoctor(props.doctor.id, updateData);
       if (result) {
-        ElMessage.success('Doctor updated successfully');
+        ElMessage.success(t('doctor.doctorUpdated'));
         emit('success');
       }
     }
   } catch (error: unknown) {
     const err = error as { response?: { data?: { message?: string } } };
-    ElMessage.error(err.response?.data?.message || 'Operation failed');
+    ElMessage.error(err.response?.data?.message || t('common.operationFailed'));
   } finally {
     loading.value = false;
   }

@@ -2,14 +2,14 @@
   <div class="doctor-list-page">
     <!-- Page Header -->
     <div class="page-header">
-      <h2>Doctor Management</h2>
+      <h2>{{ $t('doctor.title') }}</h2>
       <el-button
         v-if="isAdmin"
         type="primary"
         :icon="Plus"
         @click="handleCreate"
       >
-        Add Doctor
+        {{ $t('doctor.addDoctor') }}
       </el-button>
     </div>
 
@@ -20,25 +20,25 @@
         inline
         @submit.prevent="handleSearch"
       >
-        <el-form-item label="Name">
+        <el-form-item :label="$t('doctor.name')">
           <el-input
             v-model="searchForm.name"
-            placeholder="Doctor name"
+            :placeholder="$t('doctor.enterName')"
             clearable
             @clear="handleSearch"
           />
         </el-form-item>
-        <el-form-item label="Department">
+        <el-form-item :label="$t('doctor.department')">
           <DepartmentSelect
             v-model="searchForm.departmentId"
-            placeholder="All departments"
+            :placeholder="$t('doctor.allDepartments')"
             @change="handleSearch"
           />
         </el-form-item>
-        <el-form-item label="Title">
+        <el-form-item :label="$t('doctor.titleLabel')">
           <el-select
             v-model="searchForm.title"
-            placeholder="All titles"
+            :placeholder="$t('doctor.allTitles')"
             clearable
             style="width: 180px"
             @change="handleSearch"
@@ -51,10 +51,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="Specialty">
+        <el-form-item :label="$t('doctor.specialty')">
           <el-input
             v-model="searchForm.specialty"
-            placeholder="Specialty"
+            :placeholder="$t('doctor.specialty')"
             clearable
             @clear="handleSearch"
           />
@@ -65,13 +65,13 @@
             :icon="Search"
             @click="handleSearch"
           >
-            Search
+            {{ $t('common.search') }}
           </el-button>
           <el-button
             :icon="Refresh"
             @click="handleReset"
           >
-            Reset
+            {{ $t('common.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -88,13 +88,13 @@
       >
         <el-table-column
           prop="name"
-          label="Name"
+          :label="$t('doctor.name')"
           width="120"
           fixed="left"
         />
         <el-table-column
           prop="department"
-          label="Department"
+          :label="$t('doctor.department')"
           width="150"
         >
           <template #default="{ row }">
@@ -110,7 +110,7 @@
         </el-table-column>
         <el-table-column
           prop="title"
-          label="Title"
+          :label="$t('doctor.titleLabel')"
           width="160"
         >
           <template #default="{ row }">
@@ -119,7 +119,7 @@
         </el-table-column>
         <el-table-column
           prop="specialty"
-          label="Specialty"
+          :label="$t('doctor.specialty')"
           min-width="180"
         >
           <template #default="{ row }">
@@ -128,7 +128,7 @@
         </el-table-column>
         <el-table-column
           prop="licenseNo"
-          label="License No."
+          :label="$t('doctor.licenseNo')"
           width="150"
         >
           <template #default="{ row }">
@@ -137,7 +137,7 @@
         </el-table-column>
         <el-table-column
           prop="user"
-          label="Account"
+          :label="$t('doctor.account')"
           width="130"
         >
           <template #default="{ row }">
@@ -148,13 +148,13 @@
               size="small"
               style="margin-left: 4px"
             >
-              Inactive
+              {{ $t('doctor.inactive') }}
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column
           prop="recordsCount"
-          label="Records"
+          :label="$t('doctor.records')"
           width="90"
           align="center"
         >
@@ -164,7 +164,7 @@
         </el-table-column>
         <el-table-column
           prop="createdAt"
-          label="Created"
+          :label="$t('common.createdAt')"
           width="120"
         >
           <template #default="{ row }">
@@ -172,7 +172,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Actions"
+          :label="$t('common.actions')"
           :width="isAdmin ? 200 : 100"
           fixed="right"
           align="center"
@@ -184,7 +184,7 @@
               :icon="View"
               @click="handleView(row)"
             >
-              View
+              {{ $t('common.view') }}
             </el-button>
             <template v-if="isAdmin">
               <el-button
@@ -193,7 +193,7 @@
                 :icon="Edit"
                 @click="handleEdit(row)"
               >
-                Edit
+                {{ $t('common.edit') }}
               </el-button>
               <el-button
                 type="danger"
@@ -201,7 +201,7 @@
                 :icon="Delete"
                 @click="handleDelete(row)"
               >
-                Delete
+                {{ $t('common.delete') }}
               </el-button>
             </template>
           </template>
@@ -249,8 +249,10 @@ import { useAuthStore } from '@/stores/auth';
 import type { Doctor, DoctorListParams } from '@/types';
 import DoctorFormDialog from './components/DoctorFormDialog.vue';
 import DepartmentSelect from '@/components/common/DepartmentSelect.vue';
+import { useI18n } from 'vue-i18n';
 
 const router = useRouter();
+const { t } = useI18n();
 const doctorStore = useDoctorStore();
 const authStore = useAuthStore();
 
@@ -367,17 +369,17 @@ function handleEdit(doctor: Doctor): void {
 async function handleDelete(doctor: Doctor): Promise<void> {
   try {
     await ElMessageBox.confirm(
-      `Are you sure you want to delete doctor "${doctor.name}"?`,
-      'Confirm Delete',
+      t('doctor.deleteConfirmMsg', { name: doctor.name }),
+      t('common.confirmDeleteTitle'),
       {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: t('common.delete'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning',
       }
     );
 
     await doctorStore.deleteDoctor(doctor.id);
-    ElMessage.success('Doctor deleted successfully');
+    ElMessage.success(t('doctor.doctorDeleted'));
   } catch (error: unknown) {
     if (error !== 'cancel') {
       const err = error as { response?: { data?: { message?: string } } };

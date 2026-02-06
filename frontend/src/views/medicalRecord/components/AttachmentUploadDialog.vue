@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :model-value="visible"
-    title="Upload Attachment"
+    :title="$t('attachment.uploadAttachment')"
     width="500px"
     :close-on-click-modal="false"
     @update:model-value="$emit('update:visible', $event)"
@@ -13,7 +13,7 @@
       label-width="100px"
     >
       <el-form-item
-        label="File"
+        :label="$t('attachment.file')"
         required
       >
         <el-upload
@@ -32,7 +32,7 @@
               <Upload />
             </el-icon>
             <div class="el-upload__text">
-              Drop file here or <em>click to upload</em>
+              {{ $t('attachment.dropFileHere') }} <em>{{ $t('attachment.clickToUpload') }}</em>
             </div>
           </div>
           <div
@@ -60,18 +60,18 @@
               v-if="!selectedFile"
               class="el-upload__tip"
             >
-              Allowed types: PDF, JPG, PNG. Max size: 10MB
+              {{ $t('attachment.allowedTypes') }}
             </div>
           </template>
         </el-upload>
       </el-form-item>
 
-      <el-form-item label="Description">
+      <el-form-item :label="$t('attachment.description')">
         <el-input
           v-model="formData.description"
           type="textarea"
           :rows="2"
-          placeholder="Optional description for this attachment"
+          :placeholder="$t('attachment.optionalDescription')"
           maxlength="255"
           show-word-limit
         />
@@ -80,7 +80,7 @@
 
     <template #footer>
       <el-button @click="$emit('update:visible', false)">
-        Cancel
+        {{ $t('common.cancel') }}
       </el-button>
       <el-button
         type="primary"
@@ -88,7 +88,7 @@
         :disabled="!selectedFile"
         @click="handleUpload"
       >
-        Upload
+        {{ $t('common.upload') }}
       </el-button>
     </template>
   </el-dialog>
@@ -96,6 +96,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
+import { useI18n } from 'vue-i18n';
 import type { UploadInstance, UploadFile, UploadRawFile } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { Upload, Document, Picture, Delete } from '@element-plus/icons-vue';
@@ -113,6 +114,7 @@ const emit = defineEmits<{
   success: [];
 }>();
 
+const { t } = useI18n();
 const medicalRecordStore = useMedicalRecordStore();
 const uploadRef = ref<UploadInstance>();
 const uploading = ref(false);
@@ -138,13 +140,13 @@ function formatFileSize(bytes: number): string {
 function beforeUpload(file: UploadRawFile): boolean {
   // Check file type
   if (!ALLOWED_TYPES.includes(file.type)) {
-    ElMessage.error('Invalid file type. Allowed types: PDF, JPG, PNG');
+    ElMessage.error(t('attachment.invalidFileType'));
     return false;
   }
 
   // Check file size
   if (file.size > MAX_FILE_SIZE) {
-    ElMessage.error('File size exceeds maximum limit of 10MB');
+    ElMessage.error(t('attachment.fileSizeExceeded'));
     return false;
   }
 
@@ -164,7 +166,7 @@ function handleFileChange(uploadFile: UploadFile): void {
 
 // Handle exceed limit
 function handleExceed(): void {
-  ElMessage.warning('Only one file can be uploaded at a time');
+  ElMessage.warning(t('attachment.onlyOneFile'));
 }
 
 // Handle remove file
@@ -188,7 +190,7 @@ function handleClosed(): void {
 // Handle upload
 async function handleUpload(): Promise<void> {
   if (!selectedFile.value) {
-    ElMessage.warning('Please select a file to upload');
+    ElMessage.warning(t('attachment.selectFile'));
     return;
   }
 
@@ -202,7 +204,7 @@ async function handleUpload(): Promise<void> {
     );
 
     if (result) {
-      ElMessage.success('File uploaded successfully');
+      ElMessage.success(t('attachment.uploadSuccess'));
       emit('success');
     }
   } finally {

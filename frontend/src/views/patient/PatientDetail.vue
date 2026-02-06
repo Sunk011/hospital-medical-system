@@ -20,9 +20,9 @@
             :icon="ArrowLeft"
             @click="goBack"
           >
-            Back
+            {{ $t('common.back') }}
           </el-button>
-          <h2>Patient Details</h2>
+          <h2>{{ $t('patient.patientDetail') }}</h2>
         </div>
         <div class="header-right">
           <el-button
@@ -30,14 +30,14 @@
             :icon="Edit"
             @click="handleEdit"
           >
-            Edit
+            {{ $t('common.edit') }}
           </el-button>
           <el-button
             type="danger"
             :icon="Delete"
             @click="handleDelete"
           >
-            Delete
+            {{ $t('common.delete') }}
           </el-button>
         </div>
       </div>
@@ -47,7 +47,7 @@
         <template #header>
           <div class="card-header">
             <el-icon><User /></el-icon>
-            <span>Basic Information</span>
+            <span>{{ $t('patient.basicInfo') }}</span>
           </div>
         </template>
 
@@ -55,31 +55,31 @@
           :column="3"
           border
         >
-          <el-descriptions-item label="Medical No.">
+          <el-descriptions-item :label="$t('patient.medicalNo')">
             <el-tag type="primary">
               {{ patient.medicalNo }}
             </el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="Name">
+          <el-descriptions-item :label="$t('patient.name')">
             {{ patient.name }}
           </el-descriptions-item>
-          <el-descriptions-item label="Gender">
+          <el-descriptions-item :label="$t('patient.gender')">
             <el-tag
               v-if="patient.gender"
               :type="patient.gender === 'M' ? 'primary' : 'danger'"
               size="small"
             >
-              {{ patient.gender === 'M' ? 'Male' : 'Female' }}
+              {{ patient.gender === 'M' ? $t('patient.male') : $t('patient.female') }}
             </el-tag>
             <span v-else>-</span>
           </el-descriptions-item>
-          <el-descriptions-item label="Age">
-            {{ patient.age !== null ? `${patient.age} years` : '-' }}
+          <el-descriptions-item :label="$t('patient.age')">
+            {{ patient.age !== null ? `${patient.age} ${$t('patient.years')}` : '-' }}
           </el-descriptions-item>
-          <el-descriptions-item label="Birth Date">
+          <el-descriptions-item :label="$t('patient.birthDate')">
             {{ patient.birthDate ? formatDate(patient.birthDate) : '-' }}
           </el-descriptions-item>
-          <el-descriptions-item label="Blood Type">
+          <el-descriptions-item :label="$t('patient.bloodType')">
             <el-tag
               v-if="patient.bloodType && patient.bloodType !== 'Unknown'"
               type="warning"
@@ -89,22 +89,22 @@
             </el-tag>
             <span v-else>-</span>
           </el-descriptions-item>
-          <el-descriptions-item label="ID Card">
+          <el-descriptions-item :label="$t('patient.idCard')">
             {{ patient.idCard ? maskIdCard(patient.idCard) : '-' }}
           </el-descriptions-item>
-          <el-descriptions-item label="Phone">
+          <el-descriptions-item :label="$t('patient.phone')">
             {{ patient.phone || '-' }}
           </el-descriptions-item>
-          <el-descriptions-item label="Address">
+          <el-descriptions-item :label="$t('patient.address')">
             {{ patient.address || '-' }}
           </el-descriptions-item>
-          <el-descriptions-item label="Emergency Contact">
+          <el-descriptions-item :label="$t('patient.emergencyContact')">
             {{ patient.emergencyContact || '-' }}
           </el-descriptions-item>
-          <el-descriptions-item label="Emergency Phone">
+          <el-descriptions-item :label="$t('patient.emergencyPhone')">
             {{ patient.emergencyPhone || '-' }}
           </el-descriptions-item>
-          <el-descriptions-item label="Registered">
+          <el-descriptions-item :label="$t('patient.registered')">
             {{ formatDateTime(patient.createdAt) }}
           </el-descriptions-item>
         </el-descriptions>
@@ -115,7 +115,7 @@
         <template #header>
           <div class="card-header">
             <el-icon><Document /></el-icon>
-            <span>Medical Information</span>
+            <span>{{ $t('patient.medicalInfo') }}</span>
           </div>
         </template>
 
@@ -123,7 +123,7 @@
           :column="1"
           border
         >
-          <el-descriptions-item label="Allergies">
+          <el-descriptions-item :label="$t('patient.allergies')">
             <div
               v-if="patient.allergies"
               class="text-content"
@@ -138,16 +138,16 @@
                 {{ allergy }}
               </el-tag>
             </div>
-            <span v-else>No known allergies</span>
+            <span v-else>{{ $t('patient.noAllergies') }}</span>
           </el-descriptions-item>
-          <el-descriptions-item label="Medical History">
+          <el-descriptions-item :label="$t('patient.medicalHistory')">
             <div
               v-if="patient.medicalHistory"
               class="text-content"
             >
               {{ patient.medicalHistory }}
             </div>
-            <span v-else>No medical history recorded</span>
+            <span v-else>{{ $t('patient.noMedicalHistory') }}</span>
           </el-descriptions-item>
         </el-descriptions>
       </el-card>
@@ -157,28 +157,28 @@
         <template #header>
           <div class="card-header">
             <el-icon><DataAnalysis /></el-icon>
-            <span>Visit Statistics</span>
+            <span>{{ $t('patient.visitStatistics') }}</span>
           </div>
         </template>
 
         <el-row :gutter="20">
           <el-col :span="8">
             <el-statistic
-              title="Total Visits"
+              :title="$t('patient.totalVisits')"
               :value="patient.recordsCount || 0"
             />
           </el-col>
           <el-col :span="8">
-            <el-statistic title="Last Visit">
+            <el-statistic :title="$t('patient.lastVisit')">
               <template #default>
                 <span class="stat-text">
-                  {{ patient.lastVisitDate ? formatDate(patient.lastVisitDate) : 'Never' }}
+                  {{ patient.lastVisitDate ? formatDate(patient.lastVisitDate) : $t('patient.never') }}
                 </span>
               </template>
             </el-statistic>
           </el-col>
           <el-col :span="8">
-            <el-statistic title="Patient Since">
+            <el-statistic :title="$t('patient.patientSince')">
               <template #default>
                 <span class="stat-text">
                   {{ formatDate(patient.createdAt) }}
@@ -194,7 +194,7 @@
         <template #header>
           <div class="card-header">
             <el-icon><List /></el-icon>
-            <span>Recent Medical Records</span>
+            <span>{{ $t('patient.recentRecords') }}</span>
           </div>
         </template>
 
@@ -207,12 +207,12 @@
         >
           <el-table-column
             prop="recordNo"
-            label="Record No."
+            :label="$t('patient.recordNo')"
             width="180"
           />
           <el-table-column
             prop="visitDate"
-            label="Visit Date"
+            :label="$t('patient.visitDate')"
             width="120"
           >
             <template #default="{ row }">
@@ -221,7 +221,7 @@
           </el-table-column>
           <el-table-column
             prop="visitType"
-            label="Type"
+            :label="$t('patient.visitType')"
             width="100"
           >
             <template #default="{ row }">
@@ -235,7 +235,7 @@
           </el-table-column>
           <el-table-column
             prop="doctor.name"
-            label="Doctor"
+            :label="$t('patient.doctor')"
             width="120"
           >
             <template #default="{ row }">
@@ -244,7 +244,7 @@
           </el-table-column>
           <el-table-column
             prop="department.name"
-            label="Department"
+            :label="$t('patient.department')"
             width="150"
           >
             <template #default="{ row }">
@@ -253,7 +253,7 @@
           </el-table-column>
           <el-table-column
             prop="diagnosis"
-            label="Diagnosis"
+            :label="$t('patient.diagnosis')"
             min-width="200"
           >
             <template #default="{ row }">
@@ -262,7 +262,7 @@
           </el-table-column>
           <el-table-column
             prop="status"
-            label="Status"
+            :label="$t('common.status')"
             width="100"
           >
             <template #default="{ row }">
@@ -280,7 +280,7 @@
           v-if="medicalRecords.length === 0 && !recordsLoading"
           class="empty-records"
         >
-          <el-empty description="No medical records found" />
+          <el-empty :description="$t('patient.noRecordsFound')" />
         </div>
 
         <!-- Pagination -->
@@ -303,15 +303,15 @@
     <el-result
       v-else
       icon="warning"
-      title="Patient Not Found"
-      sub-title="The patient you are looking for does not exist."
+      :title="$t('patient.notFound')"
+      :sub-title="$t('patient.notFoundDesc')"
     >
       <template #extra>
         <el-button
           type="primary"
           @click="goBack"
         >
-          Back to List
+          {{ $t('common.backToList') }}
         </el-button>
       </template>
     </el-result>
@@ -344,7 +344,9 @@ import { getPatientRecords } from '@/api/patient';
 import type { PatientMedicalRecord, Pagination } from '@/types';
 import { logger } from '@/utils';
 import PatientFormDialog from './components/PatientFormDialog.vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const patientStore = usePatientStore();
@@ -392,9 +394,9 @@ function parseAllergies(allergies: string): string[] {
 
 function formatVisitType(type: string | null): string {
   const types: Record<string, string> = {
-    outpatient: 'Outpatient',
-    emergency: 'Emergency',
-    inpatient: 'Inpatient',
+    outpatient: t('medicalRecord.outpatient'),
+    emergency: t('medicalRecord.emergency'),
+    inpatient: t('medicalRecord.inpatient'),
   };
   return types[type || ''] || type || '-';
 }
@@ -467,18 +469,18 @@ async function handleDelete(): Promise<void> {
 
   try {
     await ElMessageBox.confirm(
-      `Are you sure you want to delete patient "${patient.value.name}" (${patient.value.medicalNo})?`,
-      'Confirm Delete',
+      t('patient.deleteConfirmMsg', { name: patient.value.name, medicalNo: patient.value.medicalNo }),
+      t('common.confirmDeleteTitle'),
       {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: t('common.delete'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning',
       }
     );
 
     const success = await patientStore.deletePatient(patient.value.id);
     if (success) {
-      ElMessage.success('Patient deleted successfully');
+      ElMessage.success(t('patient.patientDeleted'));
       router.push('/patients');
     }
   } catch {

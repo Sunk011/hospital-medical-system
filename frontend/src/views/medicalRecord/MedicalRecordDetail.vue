@@ -7,9 +7,9 @@
           :icon="ArrowLeft"
           @click="goBack"
         >
-          Back
+          {{ t('common.back') }}
         </el-button>
-        <h2>Medical Record Details</h2>
+        <h2>{{ t('medicalRecord.recordDetail') }}</h2>
       </div>
       <div class="header-right">
         <el-button
@@ -18,21 +18,21 @@
           :icon="Edit"
           @click="handleEdit"
         >
-          Edit
+          {{ t('common.edit') }}
         </el-button>
         <el-button
           v-if="record?.status === 'draft'"
           type="success"
           @click="handleConfirm"
         >
-          Confirm Record
+          {{ t('medicalRecord.confirmRecord') }}
         </el-button>
         <el-button
           v-if="record?.status === 'confirmed'"
           type="info"
           @click="handleArchive"
         >
-          Archive Record
+          {{ t('medicalRecord.archiveRecord') }}
         </el-button>
       </div>
     </div>
@@ -46,7 +46,7 @@
         <el-card class="info-card">
           <template #header>
             <div class="card-header">
-              <span>Basic Information</span>
+              <span>{{ t('common.basicInfo') }}</span>
               <el-tag
                 :type="statusColorMap[record.status as RecordStatus] || 'info'"
               >
@@ -59,10 +59,10 @@
             :column="3"
             border
           >
-            <el-descriptions-item label="Record No.">
+            <el-descriptions-item :label="t('medicalRecord.recordNo')">
               {{ record.recordNo }}
             </el-descriptions-item>
-            <el-descriptions-item label="Visit Type">
+            <el-descriptions-item :label="t('medicalRecord.visitType')">
               <el-tag
                 v-if="record.visitType"
                 :type="visitTypeColorMap[record.visitType as VisitType] || 'info'"
@@ -72,10 +72,10 @@
               </el-tag>
               <span v-else>-</span>
             </el-descriptions-item>
-            <el-descriptions-item label="Visit Date">
+            <el-descriptions-item :label="t('medicalRecord.visitDate')">
               {{ formatDate(record.visitDate) }}
             </el-descriptions-item>
-            <el-descriptions-item label="Patient">
+            <el-descriptions-item :label="t('medicalRecord.patient')">
               <router-link
                 v-if="record.patient"
                 :to="`/patients/${record.patient.id}`"
@@ -85,7 +85,7 @@
               </router-link>
               <span v-else>-</span>
             </el-descriptions-item>
-            <el-descriptions-item label="Doctor">
+            <el-descriptions-item :label="t('medicalRecord.doctor')">
               <router-link
                 v-if="record.doctor"
                 :to="`/doctors/${record.doctor.id}`"
@@ -96,13 +96,13 @@
               </router-link>
               <span v-else>-</span>
             </el-descriptions-item>
-            <el-descriptions-item label="Department">
+            <el-descriptions-item :label="t('medicalRecord.department')">
               {{ record.department?.name || '-' }}
             </el-descriptions-item>
-            <el-descriptions-item label="Created At">
+            <el-descriptions-item :label="t('common.createdAt')">
               {{ formatDateTime(record.createdAt) }}
             </el-descriptions-item>
-            <el-descriptions-item label="Updated At">
+            <el-descriptions-item :label="t('common.updatedAt')">
               {{ formatDateTime(record.updatedAt) }}
             </el-descriptions-item>
           </el-descriptions>
@@ -111,39 +111,39 @@
         <!-- Medical Information -->
         <el-card class="info-card">
           <template #header>
-            <span>Medical Information</span>
+            <span>{{ t('medicalRecord.medicalInfo') }}</span>
           </template>
 
           <el-descriptions
             :column="1"
             border
           >
-            <el-descriptions-item label="Chief Complaint">
+            <el-descriptions-item :label="t('medicalRecord.chiefComplaint')">
               <div class="text-content">
                 {{ record.chiefComplaint || '-' }}
               </div>
             </el-descriptions-item>
-            <el-descriptions-item label="Present Illness">
+            <el-descriptions-item :label="t('medicalRecord.presentIllness')">
               <div class="text-content">
                 {{ record.presentIllness || '-' }}
               </div>
             </el-descriptions-item>
-            <el-descriptions-item label="Physical Examination">
+            <el-descriptions-item :label="t('medicalRecord.physicalExam')">
               <div class="text-content">
                 {{ record.physicalExam || '-' }}
               </div>
             </el-descriptions-item>
-            <el-descriptions-item label="Diagnosis">
+            <el-descriptions-item :label="t('medicalRecord.diagnosis')">
               <div class="text-content diagnosis">
                 {{ record.diagnosis || '-' }}
               </div>
             </el-descriptions-item>
-            <el-descriptions-item label="Treatment Plan">
+            <el-descriptions-item :label="t('medicalRecord.treatmentPlan')">
               <div class="text-content">
                 {{ record.treatmentPlan || '-' }}
               </div>
             </el-descriptions-item>
-            <el-descriptions-item label="Notes">
+            <el-descriptions-item :label="t('medicalRecord.notes')">
               <div class="text-content">
                 {{ record.notes || '-' }}
               </div>
@@ -155,7 +155,7 @@
         <el-card class="info-card">
           <template #header>
             <div class="card-header">
-              <span>Prescriptions ({{ medicalRecordStore.prescriptions.length }})</span>
+              <span>{{ t('medicalRecord.prescriptions') }} ({{ medicalRecordStore.prescriptions.length }})</span>
               <el-button
                 v-if="record.status === 'draft'"
                 type="primary"
@@ -163,7 +163,7 @@
                 :icon="Plus"
                 @click="handleAddPrescription"
               >
-                Add Prescription
+                {{ t('medicalRecord.addPrescription') }}
               </el-button>
             </div>
           </template>
@@ -173,16 +173,16 @@
             :data="medicalRecordStore.prescriptions"
             stripe
             border
-            empty-text="No prescriptions"
+            :empty-text="t('medicalRecord.noPrescriptions')"
           >
             <el-table-column
               prop="medicineName"
-              label="Medicine Name"
+              :label="t('prescription.medicineName')"
               min-width="150"
             />
             <el-table-column
               prop="specification"
-              label="Specification"
+              :label="t('prescription.specification')"
               width="120"
             >
               <template #default="{ row }">
@@ -191,7 +191,7 @@
             </el-table-column>
             <el-table-column
               prop="dosage"
-              label="Dosage"
+              :label="t('prescription.dosage')"
               width="100"
             >
               <template #default="{ row }">
@@ -200,7 +200,7 @@
             </el-table-column>
             <el-table-column
               prop="frequency"
-              label="Frequency"
+              :label="t('prescription.frequency')"
               width="120"
             >
               <template #default="{ row }">
@@ -209,7 +209,7 @@
             </el-table-column>
             <el-table-column
               prop="duration"
-              label="Duration"
+              :label="t('prescription.duration')"
               width="100"
             >
               <template #default="{ row }">
@@ -218,7 +218,7 @@
             </el-table-column>
             <el-table-column
               prop="quantity"
-              label="Quantity"
+              :label="t('prescription.quantity')"
               width="80"
               align="center"
             >
@@ -228,7 +228,7 @@
             </el-table-column>
             <el-table-column
               prop="notes"
-              label="Notes"
+              :label="t('prescription.notes')"
               min-width="150"
               show-overflow-tooltip
             >
@@ -238,7 +238,7 @@
             </el-table-column>
             <el-table-column
               v-if="record.status === 'draft'"
-              label="Actions"
+              :label="t('common.actions')"
               width="150"
               align="center"
             >
@@ -264,7 +264,7 @@
         <el-card class="info-card">
           <template #header>
             <div class="card-header">
-              <span>Attachments ({{ medicalRecordStore.attachments.length }})</span>
+              <span>{{ t('medicalRecord.attachments') }} ({{ medicalRecordStore.attachments.length }})</span>
               <el-button
                 v-if="record.status === 'draft'"
                 type="primary"
@@ -272,7 +272,7 @@
                 :icon="Upload"
                 @click="handleUploadAttachment"
               >
-                Upload File
+                {{ t('medicalRecord.uploadFile') }}
               </el-button>
             </div>
           </template>
@@ -282,16 +282,16 @@
             :data="medicalRecordStore.attachments"
             stripe
             border
-            empty-text="No attachments"
+            :empty-text="t('medicalRecord.noAttachments')"
           >
             <el-table-column
               prop="fileName"
-              label="File Name"
+              :label="t('attachment.fileName')"
               min-width="200"
             />
             <el-table-column
               prop="fileType"
-              label="Type"
+              :label="t('attachment.fileType')"
               width="120"
             >
               <template #default="{ row }">
@@ -300,7 +300,7 @@
             </el-table-column>
             <el-table-column
               prop="fileSize"
-              label="Size"
+              :label="t('attachment.fileSize')"
               width="100"
             >
               <template #default="{ row }">
@@ -309,7 +309,7 @@
             </el-table-column>
             <el-table-column
               prop="description"
-              label="Description"
+              :label="t('attachment.description')"
               min-width="150"
               show-overflow-tooltip
             >
@@ -319,7 +319,7 @@
             </el-table-column>
             <el-table-column
               prop="createdAt"
-              label="Uploaded At"
+              :label="t('attachment.uploadedAt')"
               width="160"
             >
               <template #default="{ row }">
@@ -327,7 +327,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              label="Actions"
+              :label="t('common.actions')"
               width="200"
               align="center"
             >
@@ -338,7 +338,7 @@
                   :icon="Download"
                   @click="handleDownloadAttachment(row)"
                 >
-                  Download
+                  {{ t('common.download') }}
                 </el-button>
                 <el-button
                   v-if="record.status === 'draft'"
@@ -355,7 +355,7 @@
 
       <el-empty
         v-else
-        description="Medical record not found"
+        :description="t('medicalRecord.notFound')"
       />
     </div>
 
@@ -388,6 +388,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import {
   ArrowLeft,
@@ -405,8 +406,6 @@ import type {
   RecordStatus,
 } from '@/types';
 import {
-  visitTypeOptions,
-  recordStatusOptions,
   statusColorMap,
   visitTypeColorMap,
 } from '@/types';
@@ -418,6 +417,7 @@ import AttachmentUploadDialog from './components/AttachmentUploadDialog.vue';
 const route = useRoute();
 const router = useRouter();
 const medicalRecordStore = useMedicalRecordStore();
+const { t } = useI18n();
 
 // Record data
 const record = computed(() => medicalRecordStore.currentRecord);
@@ -454,14 +454,22 @@ function formatFileSize(bytes: number | null): string {
 // Get visit type label
 function getVisitTypeLabel(type: string | null): string {
   if (!type) return '-';
-  const option = visitTypeOptions.find((o) => o.value === type);
-  return option?.label || type;
+  const typeMap: Record<string, string> = {
+    outpatient: t('medicalRecord.outpatient'),
+    emergency: t('medicalRecord.emergency'),
+    inpatient: t('medicalRecord.inpatient'),
+  };
+  return typeMap[type] || type;
 }
 
 // Get status label
 function getStatusLabel(status: string): string {
-  const option = recordStatusOptions.find((o) => o.value === status);
-  return option?.label || status;
+  const statusMap: Record<string, string> = {
+    draft: t('medicalRecord.draft'),
+    confirmed: t('medicalRecord.confirmed'),
+    archived: t('medicalRecord.archived'),
+  };
+  return statusMap[status] || status;
 }
 
 // Navigation
@@ -473,14 +481,14 @@ function goBack(): void {
 async function loadRecord(): Promise<void> {
   const id = parseInt(route.params.id as string, 10);
   if (isNaN(id)) {
-    ElMessage.error('Invalid record ID');
+    ElMessage.error(t('medicalRecord.invalidRecordId'));
     goBack();
     return;
   }
 
   const success = await medicalRecordStore.fetchRecordById(id);
   if (!success) {
-    ElMessage.error('Failed to load medical record');
+    ElMessage.error(t('medicalRecord.loadFailed'));
   }
 
   // Load prescriptions and attachments
@@ -501,18 +509,18 @@ async function handleConfirm(): Promise<void> {
 
   try {
     await ElMessageBox.confirm(
-      'Are you sure you want to confirm this record? Once confirmed, it cannot be edited.',
-      'Confirm Record',
+      t('medicalRecord.confirmRecordMsg'),
+      t('medicalRecord.confirmRecord'),
       {
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: t('common.confirm'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning',
       }
     );
 
     const result = await medicalRecordStore.updateRecordStatus(record.value.id, 'confirmed');
     if (result) {
-      ElMessage.success('Record confirmed successfully');
+      ElMessage.success(t('medicalRecord.confirmedSuccess'));
     }
   } catch {
     // User cancelled
@@ -525,18 +533,18 @@ async function handleArchive(): Promise<void> {
 
   try {
     await ElMessageBox.confirm(
-      'Are you sure you want to archive this record?',
-      'Archive Record',
+      t('medicalRecord.archiveRecordMsg'),
+      t('medicalRecord.archiveRecord'),
       {
-        confirmButtonText: 'Archive',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: t('common.confirm'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning',
       }
     );
 
     const result = await medicalRecordStore.updateRecordStatus(record.value.id, 'archived');
     if (result) {
-      ElMessage.success('Record archived successfully');
+      ElMessage.success(t('medicalRecord.archivedSuccess'));
     }
   } catch {
     // User cancelled
@@ -564,18 +572,18 @@ function handleEditPrescription(prescription: Prescription): void {
 async function handleDeletePrescription(prescription: Prescription): Promise<void> {
   try {
     await ElMessageBox.confirm(
-      `Are you sure you want to delete prescription "${prescription.medicineName}"?`,
-      'Confirm Delete',
+      t('prescription.deleteConfirmMsg', { name: prescription.medicineName }),
+      t('common.confirmDeleteTitle'),
       {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: t('common.delete'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning',
       }
     );
 
     const success = await medicalRecordStore.removePrescription(prescription.id);
     if (success) {
-      ElMessage.success('Prescription deleted successfully');
+      ElMessage.success(t('prescription.deleteSuccess'));
     }
   } catch {
     // User cancelled
@@ -594,27 +602,27 @@ function handleUploadAttachment(): void {
 async function handleDownloadAttachment(attachment: Attachment): Promise<void> {
   try {
     await downloadAttachment(attachment.id, attachment.fileName);
-    ElMessage.success('Download started');
+    ElMessage.success(t('attachment.downloadStarted'));
   } catch {
-    ElMessage.error('Failed to download file');
+    ElMessage.error(t('attachment.downloadFailed'));
   }
 }
 
 async function handleDeleteAttachment(attachment: Attachment): Promise<void> {
   try {
     await ElMessageBox.confirm(
-      `Are you sure you want to delete attachment "${attachment.fileName}"?`,
-      'Confirm Delete',
+      t('attachment.deleteConfirmMsg', { name: attachment.fileName }),
+      t('common.confirmDeleteTitle'),
       {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: t('common.delete'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning',
       }
     );
 
     const success = await medicalRecordStore.removeAttachment(attachment.id);
     if (success) {
-      ElMessage.success('Attachment deleted successfully');
+      ElMessage.success(t('attachment.deleteSuccess'));
     }
   } catch {
     // User cancelled

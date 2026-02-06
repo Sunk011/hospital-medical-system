@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :model-value="visible"
-    :title="mode === 'create' ? 'Add New Patient' : 'Edit Patient'"
+    :title="mode === 'create' ? $t('patient.addPatient') : $t('patient.editPatient')"
     width="700px"
     :close-on-click-modal="false"
     @update:model-value="$emit('update:visible', $event)"
@@ -17,27 +17,27 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="Name"
+            :label="$t('patient.name')"
             prop="name"
           >
             <el-input
               v-model="formData.name"
-              placeholder="Enter patient name"
+              :placeholder="$t('patient.enterName')"
               maxlength="50"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="Gender"
+            :label="$t('patient.gender')"
             prop="gender"
           >
             <el-radio-group v-model="formData.gender">
               <el-radio value="M">
-                Male
+                {{ $t('patient.male') }}
               </el-radio>
               <el-radio value="F">
-                Female
+                {{ $t('patient.female') }}
               </el-radio>
             </el-radio-group>
           </el-form-item>
@@ -47,13 +47,13 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="Birth Date"
+            :label="$t('patient.birthDate')"
             prop="birthDate"
           >
             <el-date-picker
               v-model="formData.birthDate"
               type="date"
-              placeholder="Select birth date"
+              :placeholder="$t('patient.selectBirthDate')"
               format="YYYY-MM-DD"
               value-format="YYYY-MM-DD"
               :disabled-date="disableFutureDate"
@@ -63,12 +63,12 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="Blood Type"
+            :label="$t('patient.bloodType')"
             prop="bloodType"
           >
             <el-select
               v-model="formData.bloodType"
-              placeholder="Select blood type"
+              :placeholder="$t('patient.selectBloodType')"
               clearable
               style="width: 100%"
             >
@@ -100,24 +100,24 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="ID Card"
+            :label="$t('patient.idCard')"
             prop="idCard"
           >
             <el-input
               v-model="formData.idCard"
-              placeholder="18-digit ID card number"
+              :placeholder="$t('patient.enterIdCard')"
               maxlength="18"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="Phone"
+            :label="$t('patient.phone')"
             prop="phone"
           >
             <el-input
               v-model="formData.phone"
-              placeholder="11-digit phone number"
+              :placeholder="$t('patient.enterPhone')"
               maxlength="11"
             />
           </el-form-item>
@@ -127,24 +127,24 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="Emergency Contact"
+            :label="$t('patient.emergencyContact')"
             prop="emergencyContact"
           >
             <el-input
               v-model="formData.emergencyContact"
-              placeholder="Emergency contact name"
+              :placeholder="$t('patient.enterEmergencyContact')"
               maxlength="50"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="Emergency Phone"
+            :label="$t('patient.emergencyPhone')"
             prop="emergencyPhone"
           >
             <el-input
               v-model="formData.emergencyPhone"
-              placeholder="Emergency contact phone"
+              :placeholder="$t('patient.enterEmergencyPhone')"
               maxlength="11"
             />
           </el-form-item>
@@ -152,39 +152,39 @@
       </el-row>
 
       <el-form-item
-        label="Address"
+        :label="$t('patient.address')"
         prop="address"
       >
         <el-input
           v-model="formData.address"
           type="textarea"
-          placeholder="Enter address"
+          :placeholder="$t('patient.enterAddress')"
           maxlength="255"
           :rows="2"
         />
       </el-form-item>
 
       <el-form-item
-        label="Allergies"
+        :label="$t('patient.allergies')"
         prop="allergies"
       >
         <el-input
           v-model="formData.allergies"
           type="textarea"
-          placeholder="Enter known allergies (e.g., penicillin, peanuts)"
+          :placeholder="$t('patient.enterAllergies')"
           maxlength="1000"
           :rows="2"
         />
       </el-form-item>
 
       <el-form-item
-        label="Medical History"
+        :label="$t('patient.medicalHistory')"
         prop="medicalHistory"
       >
         <el-input
           v-model="formData.medicalHistory"
           type="textarea"
-          placeholder="Enter past medical history, chronic conditions, surgeries, etc."
+          :placeholder="$t('patient.enterMedicalHistory')"
           maxlength="2000"
           :rows="3"
         />
@@ -194,14 +194,14 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="$emit('update:visible', false)">
-          Cancel
+          {{ $t('common.cancel') }}
         </el-button>
         <el-button
           type="primary"
           :loading="loading"
           @click="handleSubmit"
         >
-          {{ mode === 'create' ? 'Create' : 'Save' }}
+          {{ mode === 'create' ? $t('common.create') : $t('common.save') }}
         </el-button>
       </span>
     </template>
@@ -214,6 +214,7 @@ import type { FormInstance, FormRules } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { usePatientStore } from '@/stores/patient';
 import type { Patient, PatientFormData, Gender, BloodType } from '@/types';
+import { useI18n } from 'vue-i18n';
 
 // Props
 const props = defineProps<{
@@ -231,6 +232,7 @@ const emit = defineEmits<{
 const patientStore = usePatientStore();
 const formRef = ref<FormInstance>();
 const loading = ref(false);
+const { t } = useI18n();
 
 // Form data
 const formData = reactive<PatientFormData>({
@@ -255,7 +257,7 @@ const validateIdCard = (_rule: unknown, value: string, callback: (error?: Error)
   }
   const idCardRegex = /^[1-9]\d{5}(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}[\dXx]$/;
   if (!idCardRegex.test(value)) {
-    callback(new Error('Invalid ID card format (18 digits, last can be X)'));
+    callback(new Error(t('patient.invalidIdCard')));
   } else {
     callback();
   }
@@ -268,7 +270,7 @@ const validatePhone = (_rule: unknown, value: string, callback: (error?: Error) 
   }
   const phoneRegex = /^1[3-9]\d{9}$/;
   if (!phoneRegex.test(value)) {
-    callback(new Error('Invalid phone format (11 digits starting with 1)'));
+    callback(new Error(t('patient.invalidPhone')));
   } else {
     callback();
   }
@@ -277,21 +279,21 @@ const validatePhone = (_rule: unknown, value: string, callback: (error?: Error) 
 // Form rules
 const formRules: FormRules = {
   name: [
-    { required: true, message: 'Name is required', trigger: 'blur' },
-    { min: 2, max: 50, message: 'Name must be 2-50 characters', trigger: 'blur' },
+    { required: true, message: () => t('patient.nameRequired'), trigger: 'blur' },
+    { min: 2, max: 50, message: () => t('patient.nameLength'), trigger: 'blur' },
     {
       pattern: /^[\u4e00-\u9fa5a-zA-Z\s]+$/,
-      message: 'Name can only contain Chinese/English characters',
+      message: () => t('patient.namePattern'),
       trigger: 'blur',
     },
   ],
   idCard: [{ validator: validateIdCard, trigger: 'blur' }],
   phone: [{ validator: validatePhone, trigger: 'blur' }],
   emergencyPhone: [{ validator: validatePhone, trigger: 'blur' }],
-  address: [{ max: 255, message: 'Address must not exceed 255 characters', trigger: 'blur' }],
-  allergies: [{ max: 1000, message: 'Allergies must not exceed 1000 characters', trigger: 'blur' }],
+  address: [{ max: 255, message: () => t('patient.addressLength'), trigger: 'blur' }],
+  allergies: [{ max: 1000, message: () => t('patient.allergiesLength'), trigger: 'blur' }],
   medicalHistory: [
-    { max: 2000, message: 'Medical history must not exceed 2000 characters', trigger: 'blur' },
+    { max: 2000, message: () => t('patient.medicalHistoryLength'), trigger: 'blur' },
   ],
 };
 
@@ -366,13 +368,13 @@ async function handleSubmit(): Promise<void> {
     if (props.mode === 'create') {
       result = await patientStore.createPatient(formData);
       if (result) {
-        ElMessage.success('Patient created successfully');
+        ElMessage.success(t('patient.patientCreated'));
         emit('success');
       }
     } else if (props.patient) {
       result = await patientStore.updatePatient(props.patient.id, formData);
       if (result) {
-        ElMessage.success('Patient updated successfully');
+        ElMessage.success(t('patient.patientUpdated'));
         emit('success');
       }
     }

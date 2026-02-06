@@ -2,15 +2,15 @@
   <div class="statistics-container">
     <div class="page-header">
       <h1 class="page-title">
-        Statistics & Analytics
+        {{ $t('statistics.title') }}
       </h1>
       <div class="header-actions">
         <el-date-picker
           v-model="dateRange"
           type="daterange"
-          range-separator="to"
-          start-placeholder="Start date"
-          end-placeholder="End date"
+          :range-separator="$t('statistics.dateRangeSeparator')"
+          :start-placeholder="$t('statistics.startDate')"
+          :end-placeholder="$t('statistics.endDate')"
           format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"
           :shortcuts="dateShortcuts"
@@ -22,7 +22,7 @@
           @click="generateReport"
         >
           <el-icon><Download /></el-icon>
-          Generate Report
+          {{ $t('statistics.generateReport') }}
         </el-button>
       </div>
     </div>
@@ -34,7 +34,7 @@
     >
       <!-- Overview Tab -->
       <el-tab-pane
-        label="Overview"
+        :label="$t('statistics.overview')"
         name="overview"
       >
         <OverviewTab
@@ -45,7 +45,7 @@
 
       <!-- Visits Tab -->
       <el-tab-pane
-        label="Visits"
+        :label="$t('statistics.visits')"
         name="visits"
       >
         <VisitsTab
@@ -56,7 +56,7 @@
 
       <!-- Departments Tab -->
       <el-tab-pane
-        label="Departments"
+        :label="$t('statistics.departments')"
         name="departments"
       >
         <DepartmentsTab :loading="loading" />
@@ -64,7 +64,7 @@
 
       <!-- Doctors Tab -->
       <el-tab-pane
-        label="Doctors"
+        :label="$t('statistics.doctors')"
         name="doctors"
       >
         <DoctorsTab :loading="loading" />
@@ -72,7 +72,7 @@
 
       <!-- Patients Tab -->
       <el-tab-pane
-        label="Patients"
+        :label="$t('statistics.patients')"
         name="patients"
       >
         <PatientsTab :loading="loading" />
@@ -80,7 +80,7 @@
 
       <!-- Diseases Tab -->
       <el-tab-pane
-        label="Diseases"
+        :label="$t('statistics.diseases')"
         name="diseases"
       >
         <DiseasesTab
@@ -91,7 +91,7 @@
 
       <!-- Prescriptions Tab -->
       <el-tab-pane
-        label="Prescriptions"
+        :label="$t('statistics.prescriptions')"
         name="prescriptions"
       >
         <PrescriptionsTab
@@ -105,6 +105,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Download } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import { useStatisticsStore } from '@/stores';
@@ -119,6 +120,7 @@ import DiseasesTab from './tabs/DiseasesTab.vue';
 import PrescriptionsTab from './tabs/PrescriptionsTab.vue';
 
 const statisticsStore = useStatisticsStore();
+const { t } = useI18n();
 
 // State
 const activeTab = ref('overview');
@@ -127,9 +129,9 @@ const reportLoading = ref(false);
 const dateRange = ref<[string, string] | null>(null);
 
 // Date shortcuts
-const dateShortcuts = [
+const dateShortcuts = computed(() => [
   {
-    text: 'Last 7 days',
+    text: t('statistics.last7Days'),
     value: () => {
       const end = new Date();
       const start = new Date();
@@ -138,7 +140,7 @@ const dateShortcuts = [
     },
   },
   {
-    text: 'Last 30 days',
+    text: t('statistics.last30Days'),
     value: () => {
       const end = new Date();
       const start = new Date();
@@ -147,7 +149,7 @@ const dateShortcuts = [
     },
   },
   {
-    text: 'Last 90 days',
+    text: t('statistics.last90Days'),
     value: () => {
       const end = new Date();
       const start = new Date();
@@ -156,7 +158,7 @@ const dateShortcuts = [
     },
   },
   {
-    text: 'This month',
+    text: t('statistics.thisMonth'),
     value: () => {
       const end = new Date();
       const start = new Date();
@@ -165,7 +167,7 @@ const dateShortcuts = [
     },
   },
   {
-    text: 'Last month',
+    text: t('statistics.lastMonth'),
     value: () => {
       const end = new Date();
       end.setDate(0);
@@ -175,14 +177,14 @@ const dateShortcuts = [
     },
   },
   {
-    text: 'This year',
+    text: t('statistics.thisYear'),
     value: () => {
       const end = new Date();
       const start = new Date(end.getFullYear(), 0, 1);
       return [start, end];
     },
   },
-];
+]);
 
 // Computed
 const dateFilter = computed<DateRangeFilter>(() => {
@@ -248,11 +250,11 @@ async function generateReport(): Promise<void> {
   try {
     const success = await statisticsStore.fetchReport(dateFilter.value);
     if (success && statisticsStore.report) {
-      ElMessage.success('Report generated successfully');
+      ElMessage.success(t('statistics.reportGeneratedSuccess'));
       // In a real app, you might download the report as PDF/Excel
       logger.info('Report data:', statisticsStore.report);
     } else {
-      ElMessage.error('Failed to generate report');
+      ElMessage.error(t('statistics.reportGeneratedFail'));
     }
   } finally {
     reportLoading.value = false;

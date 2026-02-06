@@ -16,7 +16,7 @@
         <StatCard
           :icon="Document"
           :value="prescriptionStats?.totalPrescriptions ?? 0"
-          label="Total Prescriptions"
+          :label="t('statistics.totalPrescriptions')"
           icon-color="#409EFF"
           icon-bg-color="rgba(64, 158, 255, 0.1)"
         />
@@ -29,7 +29,7 @@
         <StatCard
           :icon="Box"
           :value="prescriptionStats?.uniqueMedicines ?? 0"
-          label="Unique Medicines"
+          :label="t('statistics.uniqueMedicines')"
           icon-color="#67C23A"
           icon-bg-color="rgba(103, 194, 58, 0.1)"
         />
@@ -42,7 +42,7 @@
         <StatCard
           :icon="TrendCharts"
           :value="prescriptionStats?.averagePrescriptionsPerRecord ?? 0"
-          label="Avg per Record"
+          :label="t('statistics.avgPerRecord')"
           icon-color="#E6A23C"
           icon-bg-color="rgba(230, 162, 60, 0.1)"
         />
@@ -55,7 +55,7 @@
         <StatCard
           :icon="Medal"
           :value="topMedicineName"
-          label="Most Prescribed"
+          :label="t('statistics.mostPrescribed')"
           icon-color="#F56C6C"
           icon-bg-color="rgba(245, 108, 108, 0.1)"
         />
@@ -68,19 +68,19 @@
       class="chart-card"
     >
       <template #header>
-        <span class="card-title">Top Prescribed Medicines</span>
+        <span class="card-title">{{ t('statistics.topMedicines') }}</span>
       </template>
       <BarChart
         v-if="topMedicinesData.xAxis.length > 0"
         :x-axis-data="topMedicinesData.xAxis"
         :series="topMedicinesData.series"
         height="400px"
-        y-axis-name="Prescriptions"
+        :y-axis-name="t('statistics.prescriptionsCount')"
         :horizontal="true"
       />
       <el-empty
         v-else
-        description="No prescription data available for the selected period"
+        :description="t('statistics.noPrescriptionData')"
       />
     </el-card>
 
@@ -95,7 +95,7 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Medicine Distribution</span>
+            <span class="card-title">{{ t('statistics.medicineDistribution') }}</span>
           </template>
           <PieChart
             v-if="medicineDistributionData.length > 0"
@@ -104,7 +104,7 @@
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('statistics.noDataAvailable')"
           />
         </el-card>
       </el-col>
@@ -114,18 +114,18 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Top 5 Medicines Comparison</span>
+            <span class="card-title">{{ t('statistics.top5MedicinesComparison') }}</span>
           </template>
           <BarChart
             v-if="top5Data.xAxis.length > 0"
             :x-axis-data="top5Data.xAxis"
             :series="top5Data.series"
             height="350px"
-            y-axis-name="Count"
+            :y-axis-name="t('statistics.count')"
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('statistics.noDataAvailable')"
           />
         </el-card>
       </el-col>
@@ -135,12 +135,12 @@
     <el-card shadow="never">
       <template #header>
         <div class="card-header-with-info">
-          <span class="card-title">Medicine Details</span>
+          <span class="card-title">{{ t('statistics.medicineDetails') }}</span>
           <el-tag
             type="info"
             size="small"
           >
-            {{ prescriptionStats?.topMedicines?.length ?? 0 }} medicines listed
+            {{ t('statistics.medicinesListed', { count: prescriptionStats?.topMedicines?.length ?? 0 }) }}
           </el-tag>
         </div>
       </template>
@@ -156,7 +156,7 @@
         />
         <el-table-column
           prop="medicineName"
-          label="Medicine Name"
+          :label="t('statistics.medicineName')"
           min-width="200"
         >
           <template #default="{ row }">
@@ -173,7 +173,7 @@
         </el-table-column>
         <el-table-column
           prop="count"
-          label="Prescriptions"
+          :label="t('statistics.prescriptionsCount')"
           width="140"
           align="center"
           sortable
@@ -186,7 +186,7 @@
         </el-table-column>
         <el-table-column
           prop="percentage"
-          label="Percentage"
+          :label="t('statistics.percentage')"
           width="150"
           align="center"
           sortable
@@ -196,7 +196,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Usage Frequency"
+          :label="t('statistics.usageFrequency')"
           width="250"
         >
           <template #default="{ row }">
@@ -217,28 +217,28 @@
       class="summary-card"
     >
       <template #header>
-        <span class="card-title">Prescription Summary</span>
+        <span class="card-title">{{ t('statistics.prescriptionSummary') }}</span>
       </template>
       <el-descriptions
         :column="3"
         border
       >
-        <el-descriptions-item label="Total Prescriptions">
+        <el-descriptions-item :label="t('statistics.totalPrescriptions')">
           {{ prescriptionStats?.totalPrescriptions?.toLocaleString() ?? 0 }}
         </el-descriptions-item>
-        <el-descriptions-item label="Unique Medicines">
+        <el-descriptions-item :label="t('statistics.uniqueMedicines')">
           {{ prescriptionStats?.uniqueMedicines ?? 0 }}
         </el-descriptions-item>
-        <el-descriptions-item label="Avg per Record">
+        <el-descriptions-item :label="t('statistics.avgPerRecord')">
           {{ prescriptionStats?.averagePrescriptionsPerRecord ?? 0 }}
         </el-descriptions-item>
-        <el-descriptions-item label="Most Prescribed">
+        <el-descriptions-item :label="t('statistics.mostPrescribed')">
           {{ topMedicineName }}
         </el-descriptions-item>
-        <el-descriptions-item label="Top Medicine Count">
+        <el-descriptions-item :label="t('statistics.topMedicineCount')">
           {{ prescriptionStats?.topMedicines?.[0]?.count ?? 0 }}
         </el-descriptions-item>
-        <el-descriptions-item label="Top Medicine %">
+        <el-descriptions-item :label="t('statistics.topMedicinePercentage')">
           {{ prescriptionStats?.topMedicines?.[0]?.percentage ?? 0 }}%
         </el-descriptions-item>
       </el-descriptions>
@@ -248,6 +248,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Document, Box, TrendCharts, Medal } from '@element-plus/icons-vue';
 import { useStatisticsStore } from '@/stores';
 import { StatCard, BarChart, PieChart } from '@/components/charts';
@@ -264,6 +265,7 @@ withDefaults(defineProps<Props>(), {
   dateFilter: () => ({}),
 });
 
+const { t } = useI18n();
 const statisticsStore = useStatisticsStore();
 
 // Computed
@@ -284,7 +286,7 @@ const topMedicinesData = computed(() => {
     xAxis: medicines.map((m) => m.medicineName),
     series: [
       {
-        name: 'Prescriptions',
+        name: t('statistics.prescriptionsCount'),
         data: medicines.map((m) => m.count),
         color: '#409EFF',
       },
@@ -311,7 +313,7 @@ const medicineDistributionData = computed(() => {
 
   if (otherCount > 0) {
     data.push({
-      name: 'Others',
+      name: t('statistics.others'),
       value: otherCount,
     });
   }
@@ -331,7 +333,7 @@ const top5Data = computed(() => {
     xAxis: top.map((m) => truncateText(m.medicineName, 12)),
     series: [
       {
-        name: 'Count',
+        name: t('statistics.count'),
         data: top.map((m) => m.count),
         color: '#67C23A',
       },

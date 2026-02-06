@@ -9,18 +9,18 @@
       class="chart-card"
     >
       <template #header>
-        <span class="card-title">Top Doctors by Records</span>
+        <span class="card-title">{{ t('statistics.topDoctorsByRecords') }}</span>
       </template>
       <BarChart
         v-if="topDoctorsData.xAxis.length > 0"
         :x-axis-data="topDoctorsData.xAxis"
         :series="topDoctorsData.series"
         height="350px"
-        y-axis-name="Records"
+        :y-axis-name="t('statistics.records')"
       />
       <el-empty
         v-else
-        description="No doctor data available"
+        :description="t('statistics.noDoctorData')"
       />
     </el-card>
 
@@ -35,19 +35,19 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Patients per Doctor</span>
+            <span class="card-title">{{ t('statistics.patientsPerDoctor') }}</span>
           </template>
           <BarChart
             v-if="patientsPerDoctorData.xAxis.length > 0"
             :x-axis-data="patientsPerDoctorData.xAxis"
             :series="patientsPerDoctorData.series"
             height="300px"
-            y-axis-name="Patients"
+            :y-axis-name="t('statistics.patients')"
             :horizontal="true"
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('common.noData')"
           />
         </el-card>
       </el-col>
@@ -57,19 +57,19 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Avg Records/Month</span>
+            <span class="card-title">{{ t('statistics.avgRecordsPerMonth') }}</span>
           </template>
           <BarChart
             v-if="avgRecordsData.xAxis.length > 0"
             :x-axis-data="avgRecordsData.xAxis"
             :series="avgRecordsData.series"
             height="300px"
-            y-axis-name="Avg Records"
+            :y-axis-name="t('statistics.avgRecordsPerMonth')"
             :horizontal="true"
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('common.noData')"
           />
         </el-card>
       </el-col>
@@ -78,7 +78,7 @@
     <!-- Doctor Table -->
     <el-card shadow="never">
       <template #header>
-        <span class="card-title">Doctor Performance Details</span>
+        <span class="card-title">{{ t('statistics.doctorPerformance') }}</span>
       </template>
       <el-table
         :data="doctorStats"
@@ -92,12 +92,12 @@
         />
         <el-table-column
           prop="name"
-          label="Doctor Name"
+          :label="t('statistics.doctorName')"
           min-width="120"
         />
         <el-table-column
           prop="title"
-          label="Title"
+          :label="t('statistics.titleCol')"
           width="120"
         >
           <template #default="{ row }">
@@ -106,7 +106,7 @@
         </el-table-column>
         <el-table-column
           prop="departmentName"
-          label="Department"
+          :label="t('statistics.department')"
           min-width="150"
         >
           <template #default="{ row }">
@@ -115,7 +115,7 @@
         </el-table-column>
         <el-table-column
           prop="recordCount"
-          label="Total Records"
+          :label="t('statistics.totalRecordsLabel')"
           width="120"
           align="center"
           sortable
@@ -128,7 +128,7 @@
         </el-table-column>
         <el-table-column
           prop="patientCount"
-          label="Patients"
+          :label="t('statistics.patients')"
           width="100"
           align="center"
           sortable
@@ -141,7 +141,7 @@
         </el-table-column>
         <el-table-column
           prop="averageRecordsPerMonth"
-          label="Avg/Month"
+          :label="t('statistics.avgPerMonth')"
           width="100"
           align="center"
           sortable
@@ -151,7 +151,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Efficiency"
+          :label="t('statistics.efficiency')"
           width="150"
           align="center"
         >
@@ -170,9 +170,12 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useStatisticsStore } from '@/stores';
 import { BarChart } from '@/components/charts';
 import type { DoctorStatisticsItem } from '@/types';
+
+const { t } = useI18n();
 
 // Props
 interface Props {
@@ -201,12 +204,12 @@ const topDoctorsData = computed(() => {
     xAxis: top.map((d) => d.name),
     series: [
       {
-        name: 'Records',
+        name: t('statistics.records'),
         data: top.map((d) => d.recordCount),
         color: '#409EFF',
       },
       {
-        name: 'Patients',
+        name: t('statistics.patients'),
         data: top.map((d) => d.patientCount),
         color: '#67C23A',
       },
@@ -227,7 +230,7 @@ const patientsPerDoctorData = computed(() => {
     xAxis: sorted.map((d) => d.name),
     series: [
       {
-        name: 'Patients',
+        name: t('statistics.patients'),
         data: sorted.map((d) => d.patientCount),
         color: '#67C23A',
       },
@@ -248,7 +251,7 @@ const avgRecordsData = computed(() => {
     xAxis: sorted.map((d) => d.name),
     series: [
       {
-        name: 'Avg Records/Month',
+        name: t('statistics.avgRecordsPerMonth'),
         data: sorted.map((d) => d.averageRecordsPerMonth),
         color: '#E6A23C',
       },

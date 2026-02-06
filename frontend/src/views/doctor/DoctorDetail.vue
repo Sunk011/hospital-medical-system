@@ -7,9 +7,9 @@
           :icon="ArrowLeft"
           @click="goBack"
         >
-          Back
+          {{ $t('common.back') }}
         </el-button>
-        <h2>Doctor Details</h2>
+        <h2>{{ $t('doctor.doctorDetail') }}</h2>
       </div>
       <div
         v-if="isAdmin && doctor"
@@ -20,14 +20,14 @@
           :icon="Edit"
           @click="handleEdit"
         >
-          Edit
+          {{ $t('common.edit') }}
         </el-button>
         <el-button
           type="danger"
           :icon="Delete"
           @click="handleDelete"
         >
-          Delete
+          {{ $t('common.delete') }}
         </el-button>
       </div>
     </div>
@@ -51,7 +51,7 @@
           <el-card class="info-card">
             <template #header>
               <div class="card-header">
-                <span>Basic Information</span>
+                <span>{{ $t('doctor.basicInfo') }}</span>
               </div>
             </template>
 
@@ -59,10 +59,10 @@
               :column="2"
               border
             >
-              <el-descriptions-item label="Name">
+              <el-descriptions-item :label="$t('doctor.name')">
                 {{ doctor.name }}
               </el-descriptions-item>
-              <el-descriptions-item label="Department">
+              <el-descriptions-item :label="$t('doctor.department')">
                 <el-tag
                   v-if="doctor.department"
                   type="info"
@@ -71,24 +71,24 @@
                 </el-tag>
                 <span v-else>-</span>
               </el-descriptions-item>
-              <el-descriptions-item label="Title">
+              <el-descriptions-item :label="$t('doctor.titleLabel')">
                 {{ doctor.title || '-' }}
               </el-descriptions-item>
-              <el-descriptions-item label="License No.">
+              <el-descriptions-item :label="$t('doctor.licenseNo')">
                 {{ doctor.licenseNo || '-' }}
               </el-descriptions-item>
               <el-descriptions-item
-                label="Specialty"
+                :label="$t('doctor.specialty')"
                 :span="2"
               >
                 {{ doctor.specialty || '-' }}
               </el-descriptions-item>
               <el-descriptions-item
-                label="Introduction"
+                :label="$t('doctor.introduction')"
                 :span="2"
               >
                 <div class="introduction-text">
-                  {{ doctor.introduction || 'No introduction available.' }}
+                  {{ doctor.introduction || $t('doctor.noIntroduction') }}
                 </div>
               </el-descriptions-item>
             </el-descriptions>
@@ -98,7 +98,7 @@
           <el-card class="info-card">
             <template #header>
               <div class="card-header">
-                <span>Statistics</span>
+                <span>{{ $t('doctor.statistics') }}</span>
               </div>
             </template>
 
@@ -109,7 +109,7 @@
                     {{ doctor.recordsCount || 0 }}
                   </div>
                   <div class="stat-label">
-                    Medical Records
+                    {{ $t('doctor.medicalRecords') }}
                   </div>
                 </div>
               </el-col>
@@ -119,7 +119,7 @@
                     {{ formatDate(doctor.createdAt) }}
                   </div>
                   <div class="stat-label">
-                    Joined Date
+                    {{ $t('doctor.joinedDate') }}
                   </div>
                 </div>
               </el-col>
@@ -129,11 +129,11 @@
                     <el-tag
                       :type="doctor.user.status === 'active' ? 'success' : 'danger'"
                     >
-                      {{ doctor.user.status === 'active' ? 'Active' : 'Inactive' }}
+                      {{ doctor.user.status === 'active' ? $t('doctor.active') : $t('doctor.inactive') }}
                     </el-tag>
                   </div>
                   <div class="stat-label">
-                    Account Status
+                    {{ $t('doctor.accountStatus') }}
                   </div>
                 </div>
               </el-col>
@@ -146,7 +146,7 @@
           <el-card class="info-card">
             <template #header>
               <div class="card-header">
-                <span>Account Information</span>
+                <span>{{ $t('doctor.accountInfo') }}</span>
               </div>
             </template>
 
@@ -154,20 +154,20 @@
               :column="1"
               border
             >
-              <el-descriptions-item label="Username">
+              <el-descriptions-item :label="$t('doctor.username')">
                 {{ doctor.user.username }}
               </el-descriptions-item>
-              <el-descriptions-item label="Email">
+              <el-descriptions-item :label="$t('doctor.email')">
                 {{ doctor.user.email || '-' }}
               </el-descriptions-item>
-              <el-descriptions-item label="Phone">
+              <el-descriptions-item :label="$t('doctor.phone')">
                 {{ doctor.user.phone || '-' }}
               </el-descriptions-item>
-              <el-descriptions-item label="Status">
+              <el-descriptions-item :label="$t('doctor.accountStatus')">
                 <el-tag
                   :type="doctor.user.status === 'active' ? 'success' : 'danger'"
                 >
-                  {{ doctor.user.status === 'active' ? 'Active' : 'Inactive' }}
+                  {{ doctor.user.status === 'active' ? $t('doctor.active') : $t('doctor.inactive') }}
                 </el-tag>
               </el-descriptions-item>
             </el-descriptions>
@@ -177,7 +177,7 @@
           <el-card class="info-card">
             <template #header>
               <div class="card-header">
-                <span>Quick Actions</span>
+                <span>{{ $t('doctor.quickActions') }}</span>
               </div>
             </template>
 
@@ -187,14 +187,14 @@
                 style="width: 100%; margin-bottom: 10px"
                 @click="viewRecords"
               >
-                View Medical Records
+                {{ $t('doctor.viewRecords') }}
               </el-button>
               <el-button
                 v-if="doctor.department"
                 style="width: 100%"
                 @click="viewDepartment"
               >
-                View Department
+                {{ $t('doctor.viewDepartment') }}
               </el-button>
             </div>
           </el-card>
@@ -205,13 +205,13 @@
     <!-- Not Found -->
     <el-empty
       v-else
-      description="Doctor not found"
+      :description="$t('doctor.notFound')"
     >
       <el-button
         type="primary"
         @click="goBack"
       >
-        Go Back
+        {{ $t('common.backToList') }}
       </el-button>
     </el-empty>
 
@@ -232,8 +232,10 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { ArrowLeft, Edit, Delete } from '@element-plus/icons-vue';
 import { useDoctorStore } from '@/stores/doctor';
 import { useAuthStore } from '@/stores/auth';
+import { useI18n } from 'vue-i18n';
 import DoctorFormDialog from './components/DoctorFormDialog.vue';
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const doctorStore = useDoctorStore();
@@ -302,17 +304,17 @@ async function handleDelete(): Promise<void> {
 
   try {
     await ElMessageBox.confirm(
-      `Are you sure you want to delete doctor "${doctor.value.name}"?`,
-      'Confirm Delete',
+      t('doctor.deleteConfirmMsg', { name: doctor.value.name }),
+      t('common.confirmDeleteTitle'),
       {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: t('common.delete'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning',
       }
     );
 
     await doctorStore.deleteDoctor(doctor.value.id);
-    ElMessage.success('Doctor deleted successfully');
+    ElMessage.success(t('doctor.doctorDeleted'));
     router.push('/doctors');
   } catch (error: unknown) {
     if (error !== 'cancel') {

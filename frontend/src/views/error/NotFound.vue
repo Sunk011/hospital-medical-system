@@ -5,10 +5,10 @@
         404
       </h1>
       <h2 class="error-title">
-        Page Not Found
+        {{ $t('notFound.title') }}
       </h2>
       <p class="error-message">
-        The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+        {{ $t('notFound.message') }}
       </p>
       <el-button
         type="primary"
@@ -16,7 +16,7 @@
         @click="goHome"
       >
         <el-icon><HomeFilled /></el-icon>
-        Back to Home
+        {{ $t('notFound.backHome') }}
       </el-button>
     </div>
   </div>

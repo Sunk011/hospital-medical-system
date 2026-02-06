@@ -61,7 +61,7 @@
         >
           <el-icon><OfficeBuilding /></el-icon>
           <template #title>
-            Departments
+            {{ $t('nav.departments') }}
           </template>
         </el-menu-item>
 
@@ -81,7 +81,7 @@
         >
           <el-icon><Setting /></el-icon>
           <template #title>
-            System
+            {{ $t('nav.system') }}
           </template>
         </el-menu-item>
       </el-menu>
@@ -135,7 +135,7 @@
                 </el-dropdown-item>
                 <el-dropdown-item command="password">
                   <el-icon><Lock /></el-icon>
-                  {{ $t('auth.changePassword') || 'Change Password' }}
+                  {{ $t('nav.changePassword') }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   divided
@@ -157,7 +157,7 @@
 
       <!-- Footer -->
       <el-footer class="footer">
-        <span>Hospital Medical System &copy; 2024</span>
+        <span>{{ $t('footer.copyright') }}</span>
       </el-footer>
     </el-container>
   </el-container>
@@ -183,7 +183,9 @@ import {
   FirstAidKit,
 } from '@element-plus/icons-vue';
 import { useAuthStore, useLanguageStore } from '@/stores';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
@@ -194,8 +196,8 @@ const isCollapsed = ref(false);
 const activeMenu = computed(() => route.path);
 const currentRoute = computed(() => route.path);
 const currentPageTitle = computed(() => {
-  const title = route.meta.title as string;
-  return title || 'Page';
+  const titleKey = route.meta.title as string;
+  return titleKey ? t(titleKey) : 'Page';
 });
 
 function toggleSidebar() {
@@ -205,25 +207,25 @@ function toggleSidebar() {
 async function handleCommand(command: string) {
   switch (command) {
     case 'profile':
-      ElMessage.info('Profile page coming soon');
+      ElMessage.info(t('common.comingSoon'));
       break;
     case 'password':
-      ElMessage.info('Change password coming soon');
+      ElMessage.info(t('common.comingSoon'));
       break;
     case 'logout':
       try {
         await ElMessageBox.confirm(
-          'Are you sure you want to logout?',
-          'Confirm Logout',
+          t('auth.confirmLogout'),
+          t('auth.confirmLogoutTitle'),
           {
-            confirmButtonText: 'Logout',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: t('auth.logout'),
+            cancelButtonText: t('common.cancel'),
             type: 'warning',
           }
         );
         await authStore.logout();
         router.push('/login');
-        ElMessage.success('Logged out successfully');
+        ElMessage.success(t('auth.loggedOutSuccess'));
       } catch {
         // User cancelled
       }

@@ -9,19 +9,19 @@
       class="chart-card"
     >
       <template #header>
-        <span class="card-title">Top Diagnoses</span>
+        <span class="card-title">{{ t('statistics.topDiagnoses') }}</span>
       </template>
       <BarChart
         v-if="topDiseasesData.xAxis.length > 0"
         :x-axis-data="topDiseasesData.xAxis"
         :series="topDiseasesData.series"
         height="400px"
-        y-axis-name="Cases"
+        :y-axis-name="t('statistics.cases')"
         :horizontal="true"
       />
       <el-empty
         v-else
-        description="No diagnosis data available for the selected period"
+        :description="t('statistics.noDiagnosisData')"
       />
     </el-card>
 
@@ -36,7 +36,7 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Diagnosis Distribution</span>
+            <span class="card-title">{{ t('statistics.diagnosisDistribution') }}</span>
           </template>
           <PieChart
             v-if="diseaseDistributionData.length > 0"
@@ -45,7 +45,7 @@
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('common.noData')"
           />
         </el-card>
       </el-col>
@@ -55,18 +55,18 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Top 5 Diagnoses Comparison</span>
+            <span class="card-title">{{ t('statistics.top5DiagnosesComparison') }}</span>
           </template>
           <BarChart
             v-if="top5Data.xAxis.length > 0"
             :x-axis-data="top5Data.xAxis"
             :series="top5Data.series"
             height="350px"
-            y-axis-name="Cases"
+            :y-axis-name="t('statistics.cases')"
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('common.noData')"
           />
         </el-card>
       </el-col>
@@ -76,12 +76,12 @@
     <el-card shadow="never">
       <template #header>
         <div class="card-header-with-info">
-          <span class="card-title">Diagnosis Details</span>
+          <span class="card-title">{{ t('statistics.diagnosisDetails') }}</span>
           <el-tag
             type="info"
             size="small"
           >
-            {{ diseaseStats.length }} diagnoses found
+            {{ t('statistics.diagnosesFound', { count: diseaseStats.length }) }}
           </el-tag>
         </div>
       </template>
@@ -97,7 +97,7 @@
         />
         <el-table-column
           prop="diagnosis"
-          label="Diagnosis"
+          :label="t('statistics.diagnosis')"
           min-width="250"
         >
           <template #default="{ row }">
@@ -106,7 +106,7 @@
         </el-table-column>
         <el-table-column
           prop="count"
-          label="Cases"
+          :label="t('statistics.cases')"
           width="120"
           align="center"
           sortable
@@ -119,7 +119,7 @@
         </el-table-column>
         <el-table-column
           prop="percentage"
-          label="Percentage"
+          :label="t('statistics.percentage')"
           width="150"
           align="center"
           sortable
@@ -133,7 +133,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Relative Frequency"
+          :label="t('statistics.relativeFrequency')"
           width="200"
         >
           <template #default="{ row }">
@@ -152,6 +152,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useStatisticsStore } from '@/stores';
 import { BarChart, PieChart } from '@/components/charts';
 import type { DateRangeFilter } from '@/types';
@@ -168,6 +169,7 @@ withDefaults(defineProps<Props>(), {
 });
 
 const statisticsStore = useStatisticsStore();
+const { t } = useI18n();
 
 // Computed
 const diseaseStats = computed(() => statisticsStore.diseaseStats);
@@ -185,7 +187,7 @@ const topDiseasesData = computed(() => {
     xAxis: top.map((d) => truncateText(d.diagnosis, 30)),
     series: [
       {
-        name: 'Cases',
+        name: t('statistics.cases'),
         data: top.map((d) => d.count),
         color: '#409EFF',
       },
@@ -210,7 +212,7 @@ const diseaseDistributionData = computed(() => {
 
   if (otherCount > 0) {
     data.push({
-      name: 'Others',
+      name: t('statistics.others'),
       value: otherCount,
     });
   }
@@ -230,7 +232,7 @@ const top5Data = computed(() => {
     xAxis: top.map((d) => truncateText(d.diagnosis, 15)),
     series: [
       {
-        name: 'Cases',
+        name: t('statistics.cases'),
         data: top.map((d) => d.count),
         color: '#67C23A',
       },

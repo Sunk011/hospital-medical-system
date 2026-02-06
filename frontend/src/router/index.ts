@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import i18n from '@/locales';
 
 // Route definitions
 const routes: RouteRecordRaw[] = [
@@ -8,7 +9,7 @@ const routes: RouteRecordRaw[] = [
     name: 'Login',
     component: () => import('@/views/auth/Login.vue'),
     meta: {
-      title: 'Login',
+      title: 'auth.login',
       requiresAuth: false,
     },
   },
@@ -24,7 +25,7 @@ const routes: RouteRecordRaw[] = [
         name: 'Dashboard',
         component: () => import('@/views/dashboard/Dashboard.vue'),
         meta: {
-          title: 'Dashboard',
+          title: 'nav.dashboard',
         },
       },
       {
@@ -36,7 +37,7 @@ const routes: RouteRecordRaw[] = [
         name: 'PatientList',
         component: () => import('@/views/patient/PatientList.vue'),
         meta: {
-          title: 'Patients',
+          title: 'nav.patients',
         },
       },
       {
@@ -44,7 +45,7 @@ const routes: RouteRecordRaw[] = [
         name: 'PatientDetail',
         component: () => import('@/views/patient/PatientDetail.vue'),
         meta: {
-          title: 'Patient Details',
+          title: 'patient.patientDetail',
         },
       },
       {
@@ -52,7 +53,7 @@ const routes: RouteRecordRaw[] = [
         name: 'DoctorList',
         component: () => import('@/views/doctor/DoctorList.vue'),
         meta: {
-          title: 'Doctors',
+          title: 'nav.doctors',
         },
       },
       {
@@ -60,7 +61,7 @@ const routes: RouteRecordRaw[] = [
         name: 'DoctorDetail',
         component: () => import('@/views/doctor/DoctorDetail.vue'),
         meta: {
-          title: 'Doctor Details',
+          title: 'doctor.doctorDetail',
         },
       },
       {
@@ -68,7 +69,7 @@ const routes: RouteRecordRaw[] = [
         name: 'MedicalRecordList',
         component: () => import('@/views/medicalRecord/MedicalRecordList.vue'),
         meta: {
-          title: 'Medical Records',
+          title: 'nav.medicalRecords',
         },
       },
       {
@@ -76,7 +77,7 @@ const routes: RouteRecordRaw[] = [
         name: 'MedicalRecordDetail',
         component: () => import('@/views/medicalRecord/MedicalRecordDetail.vue'),
         meta: {
-          title: 'Medical Record Details',
+          title: 'medicalRecord.recordDetail',
         },
       },
       {
@@ -84,7 +85,7 @@ const routes: RouteRecordRaw[] = [
         name: 'Statistics',
         component: () => import('@/views/statistics/Statistics.vue'),
         meta: {
-          title: 'Statistics & Analytics',
+          title: 'statistics.title',
         },
       },
     ],
@@ -94,7 +95,7 @@ const routes: RouteRecordRaw[] = [
     name: 'NotFound',
     component: () => import('@/views/error/NotFound.vue'),
     meta: {
-      title: 'Page Not Found',
+      title: 'notFound.title',
       requiresAuth: false,
     },
   },
@@ -119,7 +120,8 @@ const router = createRouter({
 // Navigation guards
 router.beforeEach((to, _from, next) => {
   // Set page title
-  const title = to.meta.title as string;
+  const titleKey = to.meta.title as string;
+  const title = titleKey ? i18n.global.t(titleKey) : '';
   document.title = title ? `${title} - Hospital Medical System` : 'Hospital Medical System';
 
   const authStore = useAuthStore();

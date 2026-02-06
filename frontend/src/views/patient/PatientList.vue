@@ -154,7 +154,7 @@
         </el-table-column>
         <el-table-column
           prop="lastVisitDate"
-          :label="$t('patient.lastVisitDate') || 'Last Visit'"
+          :label="$t('patient.lastVisitDate')"
           width="120"
         >
           <template #default="{ row }">
@@ -183,7 +183,7 @@
               :icon="View"
               @click="handleView(row)"
             >
-              {{ $t('common.view') || 'View' }}
+              {{ $t('common.view') }}
             </el-button>
             <el-button
               type="warning"
@@ -250,7 +250,9 @@ import {
 import { usePatientStore } from '@/stores/patient';
 import type { Patient, PatientListParams } from '@/types';
 import PatientFormDialog from './components/PatientFormDialog.vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const router = useRouter();
 const patientStore = usePatientStore();
 
@@ -341,18 +343,18 @@ function handleEdit(patient: Patient): void {
 async function handleDelete(patient: Patient): Promise<void> {
   try {
     await ElMessageBox.confirm(
-      `Are you sure you want to delete patient "${patient.name}" (${patient.medicalNo})?`,
-      'Confirm Delete',
+      t('patient.deleteConfirmMsg', { name: patient.name, medicalNo: patient.medicalNo }),
+      t('common.confirmDeleteTitle'),
       {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: t('common.delete'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning',
       }
     );
 
     const success = await patientStore.deletePatient(patient.id);
     if (success) {
-      ElMessage.success('Patient deleted successfully');
+      ElMessage.success(t('patient.patientDeleted'));
     }
   } catch {
     // User cancelled

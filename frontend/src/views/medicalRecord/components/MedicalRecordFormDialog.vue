@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :model-value="visible"
-    :title="mode === 'create' ? 'Create Medical Record' : 'Edit Medical Record'"
+    :title="mode === 'create' ? $t('medicalRecord.newRecord') : $t('medicalRecord.editRecord')"
     width="800px"
     :close-on-click-modal="false"
     @update:model-value="$emit('update:visible', $event)"
@@ -18,7 +18,7 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="Patient"
+            :label="$t('medicalRecord.patient')"
             prop="patientId"
           >
             <el-select
@@ -26,7 +26,7 @@
               filterable
               remote
               reserve-keyword
-              placeholder="Search patient..."
+              :placeholder="$t('medicalRecord.searchPatient')"
               :remote-method="searchPatients"
               :loading="patientLoading"
               style="width: 100%"
@@ -42,7 +42,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="Doctor"
+            :label="$t('medicalRecord.doctor')"
             prop="doctorId"
           >
             <el-select
@@ -50,7 +50,7 @@
               filterable
               remote
               reserve-keyword
-              placeholder="Search doctor..."
+              :placeholder="$t('medicalRecord.searchDoctor')"
               :remote-method="searchDoctors"
               :loading="doctorLoading"
               style="width: 100%"
@@ -69,30 +69,30 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="Department"
+            :label="$t('medicalRecord.department')"
             prop="departmentId"
           >
             <DepartmentSelect
               v-model="formData.departmentId"
-              placeholder="Select department"
+              :placeholder="$t('medicalRecord.selectDepartment')"
               clearable
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="Visit Type"
+            :label="$t('medicalRecord.visitType')"
             prop="visitType"
           >
             <el-select
               v-model="formData.visitType"
-              placeholder="Select visit type"
+              :placeholder="$t('medicalRecord.selectVisitType')"
               style="width: 100%"
             >
               <el-option
                 v-for="item in visitTypeOptions"
                 :key="item.value"
-                :label="item.label"
+                :label="$t('medicalRecord.' + item.value)"
                 :value="item.value"
               />
             </el-select>
@@ -103,13 +103,13 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item
-            label="Visit Date"
+            :label="$t('medicalRecord.visitDate')"
             prop="visitDate"
           >
             <el-date-picker
               v-model="formData.visitDate"
               type="datetime"
-              placeholder="Select visit date"
+              :placeholder="$t('medicalRecord.selectVisitDate')"
               value-format="YYYY-MM-DDTHH:mm:ss"
               style="width: 100%"
             />
@@ -118,88 +118,88 @@
       </el-row>
 
       <el-divider content-position="left">
-        Medical Information
+        {{ $t('medicalRecord.medicalInfo') }}
       </el-divider>
 
       <el-form-item
-        label="Chief Complaint"
+        :label="$t('medicalRecord.chiefComplaint')"
         prop="chiefComplaint"
       >
         <el-input
           v-model="formData.chiefComplaint"
           type="textarea"
           :rows="2"
-          placeholder="Enter chief complaint"
+          :placeholder="$t('medicalRecord.enterChiefComplaint')"
           maxlength="2000"
           show-word-limit
         />
       </el-form-item>
 
       <el-form-item
-        label="Present Illness"
+        :label="$t('medicalRecord.presentIllness')"
         prop="presentIllness"
       >
         <el-input
           v-model="formData.presentIllness"
           type="textarea"
           :rows="3"
-          placeholder="Enter present illness history"
+          :placeholder="$t('medicalRecord.enterPresentIllness')"
           maxlength="5000"
           show-word-limit
         />
       </el-form-item>
 
       <el-form-item
-        label="Physical Exam"
+        :label="$t('medicalRecord.physicalExam')"
         prop="physicalExam"
       >
         <el-input
           v-model="formData.physicalExam"
           type="textarea"
           :rows="3"
-          placeholder="Enter physical examination findings"
+          :placeholder="$t('medicalRecord.enterPhysicalExam')"
           maxlength="5000"
           show-word-limit
         />
       </el-form-item>
 
       <el-form-item
-        label="Diagnosis"
+        :label="$t('medicalRecord.diagnosis')"
         prop="diagnosis"
       >
         <el-input
           v-model="formData.diagnosis"
           type="textarea"
           :rows="2"
-          placeholder="Enter diagnosis"
+          :placeholder="$t('medicalRecord.enterDiagnosis')"
           maxlength="2000"
           show-word-limit
         />
       </el-form-item>
 
       <el-form-item
-        label="Treatment Plan"
+        :label="$t('medicalRecord.treatmentPlan')"
         prop="treatmentPlan"
       >
         <el-input
           v-model="formData.treatmentPlan"
           type="textarea"
           :rows="3"
-          placeholder="Enter treatment plan"
+          :placeholder="$t('medicalRecord.enterTreatmentPlan')"
           maxlength="5000"
           show-word-limit
         />
       </el-form-item>
 
       <el-form-item
-        label="Notes"
+        :label="$t('medicalRecord.notes')"
         prop="notes"
       >
         <el-input
           v-model="formData.notes"
           type="textarea"
           :rows="2"
-          placeholder="Enter additional notes"
+          :placeholder="$t('medicalRecord.enterNotes')"
           maxlength="2000"
           show-word-limit
         />
@@ -208,14 +208,14 @@
 
     <template #footer>
       <el-button @click="$emit('update:visible', false)">
-        Cancel
+        {{ $t('common.cancel') }}
       </el-button>
       <el-button
         type="primary"
         :loading="submitting"
         @click="handleSubmit"
       >
-        {{ mode === 'create' ? 'Create' : 'Save' }}
+        {{ mode === 'create' ? $t('common.create') : $t('common.save') }}
       </el-button>
     </template>
   </el-dialog>
@@ -223,6 +223,7 @@
 
 <script setup lang="ts">
 import { ref, watch, reactive } from 'vue';
+import { useI18n } from 'vue-i18n';
 import type { FormInstance, FormRules } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { useMedicalRecordStore } from '@/stores/medicalRecord';
@@ -247,6 +248,7 @@ const emit = defineEmits<{
   success: [];
 }>();
 
+const { t } = useI18n();
 const medicalRecordStore = useMedicalRecordStore();
 const formRef = ref<FormInstance>();
 const submitting = ref(false);
@@ -277,16 +279,16 @@ const formData = reactive<MedicalRecordFormData>({
 // Validation rules
 const rules: FormRules = {
   patientId: [
-    { required: true, message: 'Please select a patient', trigger: 'change' },
+    { required: true, message: t('medicalRecord.selectPatient'), trigger: 'change' },
   ],
   doctorId: [
-    { required: true, message: 'Please select a doctor', trigger: 'change' },
+    { required: true, message: t('medicalRecord.selectDoctor'), trigger: 'change' },
   ],
   visitType: [
-    { required: true, message: 'Please select visit type', trigger: 'change' },
+    { required: true, message: t('medicalRecord.selectVisitTypeRequired'), trigger: 'change' },
   ],
   visitDate: [
-    { required: true, message: 'Please select visit date', trigger: 'change' },
+    { required: true, message: t('medicalRecord.selectVisitDateRequired'), trigger: 'change' },
   ],
 };
 
@@ -432,8 +434,8 @@ async function handleSubmit(): Promise<void> {
     if (result) {
       ElMessage.success(
         props.mode === 'create'
-          ? 'Medical record created successfully'
-          : 'Medical record updated successfully'
+          ? t('medicalRecord.createdSuccess')
+          : t('medicalRecord.updatedSuccess')
       );
       emit('success');
     }

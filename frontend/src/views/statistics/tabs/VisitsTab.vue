@@ -16,7 +16,7 @@
         <StatCard
           :icon="Calendar"
           :value="visitStats?.totalVisits ?? 0"
-          label="Total Visits"
+          :label="t('statistics.totalVisits')"
           icon-color="#409EFF"
           icon-bg-color="rgba(64, 158, 255, 0.1)"
         />
@@ -29,7 +29,7 @@
         <StatCard
           :icon="TrendCharts"
           :value="visitStats?.averageVisitsPerDay ?? 0"
-          label="Avg Visits/Day"
+          :label="t('statistics.avgVisitsPerDay')"
           icon-color="#67C23A"
           icon-bg-color="rgba(103, 194, 58, 0.1)"
         />
@@ -42,7 +42,7 @@
         <StatCard
           :icon="FirstAidKit"
           :value="outpatientCount"
-          label="Outpatient"
+          :label="t('statistics.outpatient')"
           icon-color="#E6A23C"
           icon-bg-color="rgba(230, 162, 60, 0.1)"
         />
@@ -55,7 +55,7 @@
         <StatCard
           :icon="Warning"
           :value="emergencyCount"
-          label="Emergency"
+          :label="t('statistics.emergency')"
           icon-color="#F56C6C"
           icon-bg-color="rgba(245, 108, 108, 0.1)"
         />
@@ -68,18 +68,18 @@
       class="chart-card"
     >
       <template #header>
-        <span class="card-title">Visit Trend Over Time</span>
+        <span class="card-title">{{ t('statistics.visitTrendOverTime') }}</span>
       </template>
       <LineChart
         v-if="visitTrendData.xAxis.length > 0"
         :x-axis-data="visitTrendData.xAxis"
         :series="visitTrendData.series"
         height="400px"
-        y-axis-name="Number of Visits"
+        :y-axis-name="t('statistics.numberOfVisits')"
       />
       <el-empty
         v-else
-        description="No visit data available for the selected period"
+        :description="t('statistics.noVisitData')"
       />
     </el-card>
 
@@ -94,7 +94,7 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Visit Types Distribution</span>
+            <span class="card-title">{{ t('statistics.visitTypesDistribution') }}</span>
           </template>
           <PieChart
             v-if="visitTypeData.length > 0"
@@ -103,7 +103,7 @@
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('common.noData')"
           />
         </el-card>
       </el-col>
@@ -113,7 +113,7 @@
       >
         <el-card shadow="never">
           <template #header>
-            <span class="card-title">Record Status Distribution</span>
+            <span class="card-title">{{ t('statistics.recordStatusDistribution') }}</span>
           </template>
           <PieChart
             v-if="visitStatusData.length > 0"
@@ -123,7 +123,7 @@
           />
           <el-empty
             v-else
-            description="No data available"
+            :description="t('common.noData')"
           />
         </el-card>
       </el-col>
@@ -135,18 +135,18 @@
       class="chart-card"
     >
       <template #header>
-        <span class="card-title">Visit Type Comparison</span>
+        <span class="card-title">{{ t('statistics.visitTypeComparison') }}</span>
       </template>
       <BarChart
         v-if="visitTypeBarData.xAxis.length > 0"
         :x-axis-data="visitTypeBarData.xAxis"
         :series="visitTypeBarData.series"
         height="300px"
-        y-axis-name="Count"
+        :y-axis-name="t('statistics.count')"
       />
       <el-empty
         v-else
-        description="No data available"
+        :description="t('common.noData')"
       />
     </el-card>
   </div>
@@ -154,6 +154,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Calendar, TrendCharts, FirstAidKit, Warning } from '@element-plus/icons-vue';
 import { useStatisticsStore } from '@/stores';
 import { StatCard, LineChart, PieChart, BarChart } from '@/components/charts';
@@ -171,6 +172,7 @@ withDefaults(defineProps<Props>(), {
 });
 
 const statisticsStore = useStatisticsStore();
+const { t } = useI18n();
 
 // Computed
 const visitStats = computed(() => statisticsStore.visitStats);
@@ -193,26 +195,26 @@ const visitTrendData = computed(() => {
     xAxis: trend.map((t) => t.date),
     series: [
       {
-        name: 'Total Visits',
+        name: t('statistics.totalVisits'),
         data: trend.map((t) => t.count),
         color: '#409EFF',
         smooth: true,
         areaStyle: true,
       },
       {
-        name: 'Outpatient',
+        name: t('statistics.outpatient'),
         data: trend.map((t) => t.outpatient),
         color: '#67C23A',
         smooth: true,
       },
       {
-        name: 'Emergency',
+        name: t('statistics.emergency'),
         data: trend.map((t) => t.emergency),
         color: '#F56C6C',
         smooth: true,
       },
       {
-        name: 'Inpatient',
+        name: t('statistics.inpatient'),
         data: trend.map((t) => t.inpatient),
         color: '#E6A23C',
         smooth: true,
@@ -228,10 +230,10 @@ const visitTypeData = computed(() => {
   }
 
   const typeLabels: Record<string, string> = {
-    outpatient: 'Outpatient',
-    emergency: 'Emergency',
-    inpatient: 'Inpatient',
-    unknown: 'Unknown',
+    outpatient: t('statistics.outpatient'),
+    emergency: t('statistics.emergency'),
+    inpatient: t('statistics.inpatient'),
+    unknown: t('common.unknown'),
   };
 
   return Object.entries(stats.visitsByType).map(([key, value]) => ({
@@ -247,9 +249,9 @@ const visitStatusData = computed(() => {
   }
 
   const statusLabels: Record<string, string> = {
-    draft: 'Draft',
-    confirmed: 'Confirmed',
-    archived: 'Archived',
+    draft: t('statistics.draft'),
+    confirmed: t('statistics.confirmed'),
+    archived: t('statistics.archived'),
   };
 
   return Object.entries(stats.visitsByStatus).map(([key, value]) => ({
@@ -265,9 +267,9 @@ const visitTypeBarData = computed(() => {
   }
 
   const typeLabels: Record<string, string> = {
-    outpatient: 'Outpatient',
-    emergency: 'Emergency',
-    inpatient: 'Inpatient',
+    outpatient: t('statistics.outpatient'),
+    emergency: t('statistics.emergency'),
+    inpatient: t('statistics.inpatient'),
   };
 
   const entries = Object.entries(stats.visitsByType).filter(([key]) => key !== 'unknown');
@@ -276,7 +278,7 @@ const visitTypeBarData = computed(() => {
     xAxis: entries.map(([key]) => typeLabels[key] || key),
     series: [
       {
-        name: 'Visits',
+        name: t('statistics.visits'),
         data: entries.map(([, value]) => value),
       },
     ],
