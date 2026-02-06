@@ -90,6 +90,113 @@ export class DepartmentService {
   }
 
   /**
+   * Create a new department
+   */
+  async createDepartment(data: {
+    name: string;
+    code?: string | null;
+    description?: string | null;
+    status?: number;
+  }): Promise<DepartmentResponse> {
+    // Check unique code if provided
+    if (data.code) {
+      const existing = await prisma.department.findUnique({ where: { code: data.code } });
+      if (existing) {
+        throw new ApiError('Department code already exists', 409);
+      }
+    }
+
+    const department = await prisma.department.create({
+      data: {
+        name: data.name,
+        code: data.code || null,
+        description: data.description || null,
+        status: data.status ?? 1,
+      },
+      include: {
+        _count: { select: { doctors: true } },
+      },
+    });
+
+    return {
+      id: department.id,
+      name: department.name,
+      code: department.code,
+      description: department.description,
+      status: department.status,
+      doctorCount: department._count.doctors,
+      createdAt: department.createdAt,
+    };
+  }
+
+  /**
+   * Update department
+   */
+  async updateDepartment(
+    id: number,
+    data: {
+      name?: string;
+      code?: string | null;
+      description?: string | null;
+      status?: number;
+    }
+  ): Promise<DepartmentResponse> {
+    const existing = await prisma.department.findUnique({ where: { id } });
+    if (!existing) {
+      throw new ApiError('Department not found', 404);
+    }
+
+    // Check unique code if changed
+    if (data.code && data.code !== existing.code) {
+      const codeExists = await prisma.department.findUnique({ where: { code: data.code } });
+      if (codeExists) {
+        throw new ApiError('Department code already exists', 409);
+      }
+    }
+
+    const department = await prisma.department.update({
+      where: { id },
+      data: {
+        ...(data.name !== undefined && { name: data.name }),
+        ...(data.code !== undefined && { code: data.code }),
+        ...(data.description !== undefined && { description: data.description }),
+        ...(data.status !== undefined && { status: data.status }),
+      },
+      include: {
+        _count: { select: { doctors: true } },
+      },
+    });
+
+    return {
+      id: department.id,
+      name: department.name,
+      code: department.code,
+      description: department.description,
+      status: department.status,
+      doctorCount: department._count.doctors,
+      createdAt: department.createdAt,
+    };
+  }
+
+  /**
+   * Delete department
+   */
+  async deleteDepartment(id: number): Promise<void> {
+    const existing = await prisma.department.findUnique({
+      where: { id },
+      include: { _count: { select: { doctors: true } } },
+    });
+    if (!existing) {
+      throw new ApiError('Department not found', 404);
+    }
+    if (existing._count.doctors > 0) {
+      throw new ApiError('Cannot delete department with associated doctors', 400);
+    }
+
+    await prisma.department.delete({ where: { id } });
+  }
+
+  /**
    * Check if department exists
    */
   async departmentExists(id: number): Promise<boolean> {

@@ -1,16 +1,13 @@
 import { Router } from 'express';
 import { departmentController } from '../controllers/doctor.controller';
-import { authenticate, validate } from '../middlewares';
-import { param } from 'express-validator';
+import { authenticate, authorize, validate } from '../middlewares';
+import {
+  createDepartmentValidator,
+  updateDepartmentValidator,
+  departmentIdParamValidator,
+} from '../validators/department.validator';
 
 const router = Router();
-
-// Validator for department ID
-const departmentIdParamValidator = [
-  param('id')
-    .isInt({ min: 1 })
-    .withMessage('Department ID must be a positive integer'),
-];
 
 /**
  * @route   GET /api/v1/departments/active
@@ -37,6 +34,33 @@ router.get('/', authenticate, (req, res, next) => {
  */
 router.get('/:id', authenticate, validate(departmentIdParamValidator), (req, res, next) => {
   departmentController.getDepartmentById(req, res, next);
+});
+
+/**
+ * @route   POST /api/v1/departments
+ * @desc    Create a new department
+ * @access  Private (Admin only)
+ */
+router.post('/', authenticate, authorize('admin'), validate(createDepartmentValidator), (req, res, next) => {
+  departmentController.createDepartment(req, res, next);
+});
+
+/**
+ * @route   PUT /api/v1/departments/:id
+ * @desc    Update department
+ * @access  Private (Admin only)
+ */
+router.put('/:id', authenticate, authorize('admin'), validate(updateDepartmentValidator), (req, res, next) => {
+  departmentController.updateDepartment(req, res, next);
+});
+
+/**
+ * @route   DELETE /api/v1/departments/:id
+ * @desc    Delete department
+ * @access  Private (Admin only)
+ */
+router.delete('/:id', authenticate, authorize('admin'), validate(departmentIdParamValidator), (req, res, next) => {
+  departmentController.deleteDepartment(req, res, next);
 });
 
 export default router;

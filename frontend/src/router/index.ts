@@ -81,11 +81,28 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
+        path: 'departments',
+        name: 'DepartmentList',
+        component: () => import('@/views/department/DepartmentList.vue'),
+        meta: {
+          title: 'department.title',
+        },
+      },
+      {
         path: 'statistics',
         name: 'Statistics',
         component: () => import('@/views/statistics/Statistics.vue'),
         meta: {
           title: 'statistics.title',
+        },
+      },
+      {
+        path: 'system',
+        name: 'SystemManagement',
+        component: () => import('@/views/system/SystemManagement.vue'),
+        meta: {
+          title: 'system.title',
+          requiresAdmin: true,
         },
       },
     ],

@@ -7,6 +7,7 @@ import medicalRecordRoutes from './medicalRecord.routes';
 import prescriptionRoutes from './prescription.routes';
 import attachmentRoutes from './attachment.routes';
 import statisticsRoutes from './statistics.routes';
+import systemRoutes from './system.routes';
 
 const router = Router();
 
@@ -28,6 +29,7 @@ router.use('/auth', authRoutes);
 router.use('/patients', patientRoutes);
 router.use('/doctors', doctorRoutes);
 router.use('/departments', departmentRoutes);
+router.use('/system', systemRoutes);
 router.use('/medical-records', medicalRecordRoutes);
 router.use('/prescriptions', prescriptionRoutes);
 router.use('/attachments', attachmentRoutes);

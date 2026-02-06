@@ -5,3 +5,5 @@ export * from './medicalRecord.validator';
 export * from './prescription.validator';
 export * from './attachment.validator';
 export * from './statistics.validator';
+export * from './department.validator';
+export * from './system.validator';

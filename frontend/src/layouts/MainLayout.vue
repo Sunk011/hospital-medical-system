@@ -57,7 +57,6 @@
 
         <el-menu-item
           index="/departments"
-          disabled
         >
           <el-icon><OfficeBuilding /></el-icon>
           <template #title>
@@ -77,7 +76,6 @@
         <el-menu-item
           v-if="authStore.isAdmin()"
           index="/system"
-          disabled
         >
           <el-icon><Setting /></el-icon>
           <template #title>

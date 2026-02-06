@@ -203,6 +203,47 @@ export class DepartmentController {
       next(error);
     }
   }
+
+  /**
+   * POST /api/v1/departments
+   * Create a new department
+   */
+  async createDepartment(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const department = await departmentService.createDepartment(req.body);
+      sendCreated(res, department, 'Department created successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * PUT /api/v1/departments/:id
+   * Update department
+   */
+  async updateDepartment(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { id } = req.params;
+      const department = await departmentService.updateDepartment(parseInt(id, 10), req.body);
+      sendSuccess(res, department, 'Department updated successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * DELETE /api/v1/departments/:id
+   * Delete department
+   */
+  async deleteDepartment(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { id } = req.params;
+      await departmentService.deleteDepartment(parseInt(id, 10));
+      sendSuccess(res, null, 'Department deleted successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export const doctorController = new DoctorController();
