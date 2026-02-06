@@ -83,6 +83,37 @@ export class AuthService {
   }
 
   /**
+   * Get users list with optional filtering
+   * Used for admin features like assigning user accounts to doctors
+   */
+  async getUsers(filters?: {
+    role?: string;
+    hasDoctor?: boolean;
+  }): Promise<UserResponse[]> {
+    const where: Record<string, unknown> = {
+      status: 'active',
+    };
+
+    if (filters?.role) {
+      where.role = filters.role;
+    }
+
+    // Filter users that don't have a doctor profile yet
+    if (filters?.hasDoctor === false) {
+      where.doctor = null;
+    } else if (filters?.hasDoctor === true) {
+      where.doctor = { isNot: null };
+    }
+
+    const users = await prisma.user.findMany({
+      where,
+      orderBy: { username: 'asc' },
+    });
+
+    return users.map((user) => this.formatUserResponse(user));
+  }
+
+  /**
    * Change user password
    */
   async changePassword(

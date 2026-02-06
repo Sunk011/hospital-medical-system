@@ -70,6 +70,29 @@ export class AuthController {
   }
 
   /**
+   * GET /api/v1/auth/users
+   * Get users list (admin only)
+   */
+  async getUsers(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { role, hasDoctor } = req.query;
+
+      const filters: { role?: string; hasDoctor?: boolean } = {};
+      if (role && typeof role === 'string') {
+        filters.role = role;
+      }
+      if (hasDoctor !== undefined) {
+        filters.hasDoctor = hasDoctor === 'true';
+      }
+
+      const users = await authService.getUsers(filters);
+      sendSuccess(res, users, 'Users retrieved successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
    * PUT /api/v1/auth/password
    * Change user password
    */

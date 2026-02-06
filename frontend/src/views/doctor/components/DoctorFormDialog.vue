@@ -146,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, reactive, onMounted, computed } from 'vue';
+import { ref, watch, reactive, computed } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { useDoctorStore } from '@/stores/doctor';
@@ -341,12 +341,8 @@ async function handleSubmit(): Promise<void> {
   }
 }
 
-// Load available users on mount
-onMounted(() => {
-  if (props.mode === 'create') {
-    loadAvailableUsers();
-  }
-});
+// Note: loadAvailableUsers is called via watch when dialog becomes visible
+// Do NOT call it in onMounted as the dialog may not be visible yet
 </script>
 
 <style scoped>

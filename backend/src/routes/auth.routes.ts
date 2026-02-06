@@ -33,6 +33,15 @@ router.get('/profile', authenticate, (req, res, next) => {
 });
 
 /**
+ * @route   GET /api/v1/auth/users
+ * @desc    Get users list (admin only, for assigning accounts to doctors)
+ * @access  Private (Admin only)
+ */
+router.get('/users', authenticate, (req, res, next) => {
+  authController.getUsers(req, res, next);
+});
+
+/**
  * @route   PUT /api/v1/auth/password
  * @desc    Change user password
  * @access  Private
