@@ -2,10 +2,10 @@
   <div class="dashboard-container">
     <div class="welcome-section">
       <h1 class="welcome-title">
-        Welcome, {{ authStore.username }}
+        {{ $t('dashboard.welcome') }}, {{ authStore.username }}
       </h1>
       <p class="welcome-subtitle">
-        Hospital Medical Record Management System
+        {{ $t('dashboard.hospitalSystem') }}
       </p>
     </div>
 
@@ -14,135 +14,135 @@
       :gutter="20"
       class="stats-row"
     >
-      <el-col
-        :xs="24"
-        :sm="12"
-        :md="6"
-      >
-        <StatCard
-          :icon="User"
-          :value="dashboardStats?.totalPatients ?? 0"
-          label="Total Patients"
-          icon-color="#409EFF"
-          icon-bg-color="rgba(64, 158, 255, 0.1)"
-          :loading="loading"
-          :show-trend="true"
-          :trend="patientGrowthRate"
-          trend-label="this month"
-        />
-      </el-col>
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="6"
+        >
+          <StatCard
+            :icon="User"
+            :value="dashboardStats?.totalPatients ?? 0"
+            :label="$t('statistics.totalPatients')"
+            icon-color="#409EFF"
+            icon-bg-color="rgba(64, 158, 255, 0.1)"
+            :loading="loading"
+            :show-trend="true"
+            :trend="patientGrowthRate"
+            trend-label="this month"
+          />
+        </el-col>
 
-      <el-col
-        :xs="24"
-        :sm="12"
-        :md="6"
-      >
-        <StatCard
-          :icon="Document"
-          :value="dashboardStats?.totalMedicalRecords ?? 0"
-          label="Medical Records"
-          icon-color="#67C23A"
-          icon-bg-color="rgba(103, 194, 58, 0.1)"
-          :loading="loading"
-        />
-      </el-col>
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="6"
+        >
+          <StatCard
+            :icon="Document"
+            :value="dashboardStats?.totalMedicalRecords ?? 0"
+            :label="$t('statistics.totalRecords')"
+            icon-color="#67C23A"
+            icon-bg-color="rgba(103, 194, 58, 0.1)"
+            :loading="loading"
+          />
+        </el-col>
 
-      <el-col
-        :xs="24"
-        :sm="12"
-        :md="6"
-      >
-        <StatCard
-          :icon="UserFilled"
-          :value="dashboardStats?.totalDoctors ?? 0"
-          label="Doctors"
-          icon-color="#E6A23C"
-          icon-bg-color="rgba(230, 162, 60, 0.1)"
-          :loading="loading"
-        />
-      </el-col>
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="6"
+        >
+          <StatCard
+            :icon="UserFilled"
+            :value="dashboardStats?.totalDoctors ?? 0"
+            :label="$t('statistics.totalDoctors')"
+            icon-color="#E6A23C"
+            icon-bg-color="rgba(230, 162, 60, 0.1)"
+            :loading="loading"
+          />
+        </el-col>
 
-      <el-col
-        :xs="24"
-        :sm="12"
-        :md="6"
-      >
-        <StatCard
-          :icon="OfficeBuilding"
-          :value="dashboardStats?.totalDepartments ?? 0"
-          label="Departments"
-          icon-color="#F56C6C"
-          icon-bg-color="rgba(245, 108, 108, 0.1)"
-          :loading="loading"
-        />
-      </el-col>
-    </el-row>
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="6"
+        >
+          <StatCard
+            :icon="OfficeBuilding"
+            :value="dashboardStats?.totalDepartments ?? 0"
+            label="Departments"
+            icon-color="#F56C6C"
+            icon-bg-color="rgba(245, 108, 108, 0.1)"
+            :loading="loading"
+          />
+        </el-col>
+      </el-row>
 
-    <!-- Secondary Stats -->
-    <el-row
-      :gutter="20"
-      class="stats-row"
-    >
-      <el-col
-        :xs="24"
-        :sm="12"
-        :md="6"
+      <!-- Secondary Stats -->
+      <el-row
+        :gutter="20"
+        class="stats-row"
       >
-        <StatCard
-          :icon="Calendar"
-          :value="dashboardStats?.todayVisits ?? 0"
-          label="Today's Visits"
-          icon-color="#9B59B6"
-          icon-bg-color="rgba(155, 89, 182, 0.1)"
-          :loading="loading"
-        />
-      </el-col>
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="6"
+        >
+          <StatCard
+            :icon="Calendar"
+            :value="dashboardStats?.todayVisits ?? 0"
+            :label="$t('statistics.todayVisits')"
+            icon-color="#9B59B6"
+            icon-bg-color="rgba(155, 89, 182, 0.1)"
+            :loading="loading"
+          />
+        </el-col>
 
-      <el-col
-        :xs="24"
-        :sm="12"
-        :md="6"
-      >
-        <StatCard
-          :icon="TrendCharts"
-          :value="dashboardStats?.monthlyVisits ?? 0"
-          label="Monthly Visits"
-          icon-color="#1ABC9C"
-          icon-bg-color="rgba(26, 188, 156, 0.1)"
-          :loading="loading"
-        />
-      </el-col>
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="6"
+        >
+          <StatCard
+            :icon="TrendCharts"
+            :value="dashboardStats?.monthlyVisits ?? 0"
+            :label="$t('statistics.monthlyVisits')"
+            icon-color="#1ABC9C"
+            icon-bg-color="rgba(26, 188, 156, 0.1)"
+            :loading="loading"
+          />
+        </el-col>
 
-      <el-col
-        :xs="24"
-        :sm="12"
-        :md="6"
-      >
-        <StatCard
-          :icon="Plus"
-          :value="dashboardStats?.newPatientsThisMonth ?? 0"
-          label="New Patients (Month)"
-          icon-color="#3498DB"
-          icon-bg-color="rgba(52, 152, 219, 0.1)"
-          :loading="loading"
-        />
-      </el-col>
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="6"
+        >
+          <StatCard
+            :icon="Plus"
+            :value="dashboardStats?.newPatientsThisMonth ?? 0"
+            :label="$t('statistics.newPatientsThisMonth')"
+            icon-color="#3498DB"
+            icon-bg-color="rgba(52, 152, 219, 0.1)"
+            :loading="loading"
+          />
+        </el-col>
 
-      <el-col
-        :xs="24"
-        :sm="12"
-        :md="6"
-      >
-        <StatCard
-          :icon="Clock"
-          :value="dashboardStats?.pendingRecords ?? 0"
-          label="Pending Records"
-          icon-color="#E74C3C"
-          icon-bg-color="rgba(231, 76, 60, 0.1)"
-          :loading="loading"
-        />
-      </el-col>
-    </el-row>
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="6"
+        >
+          <StatCard
+            :icon="Clock"
+            :value="dashboardStats?.pendingRecords ?? 0"
+            :label="$t('statistics.pendingRecords')"
+            icon-color="#E74C3C"
+            icon-bg-color="rgba(231, 76, 60, 0.1)"
+            :loading="loading"
+          />
+        </el-col>
+      </el-row>
 
     <!-- Charts Row -->
     <el-row
@@ -159,13 +159,13 @@
         >
           <template #header>
             <div class="card-header">
-              <span>Visit Trend (Last 30 Days)</span>
+              <span>{{ $t('dashboard.visitTrend') }}</span>
               <el-button
                 text
                 type="primary"
                 @click="navigateToStatistics"
               >
-                View Details
+                {{ $t('dashboard.viewDetails') }}
               </el-button>
             </div>
           </template>
@@ -182,7 +182,7 @@
             />
             <el-empty
               v-else
-              description="No visit data available"
+              :description="$t('common.noData')"
             />
           </div>
         </el-card>
@@ -198,7 +198,7 @@
         >
           <template #header>
             <div class="card-header">
-              <span>Visit Types Distribution</span>
+              <span>{{ $t('dashboard.visitTypes') }}</span>
             </div>
           </template>
           <div
@@ -213,7 +213,70 @@
             />
             <el-empty
               v-else
-              description="No visit type data available"
+              :description="$t('common.noData')"
+            />
+          </div>
+        </el-card>
+      </el-col>
+
+      <el-col
+        :xs="24"
+        :lg="8"
+      >
+        <el-card
+          class="content-card"
+          shadow="hover"
+        >
+          <template #header>
+            <div class="card-header">
+              <span>{{ $t('dashboard.visitTypes') }}</span>
+            </div>
+          </template>
+          <div
+            v-loading="statsLoading"
+            class="chart-wrapper"
+          >
+            <PieChart
+              v-if="visitTypeData.length > 0"
+              :data="visitTypeData"
+              height="300px"
+              :radius="['40%', '70%']"
+            />
+            <el-empty
+              v-else
+              :description="$t('common.noData')"
+            />
+          </div>
+        </el-card>
+      </el-col>
+
+      <el-col
+        :xs="24"
+        :lg="16"
+      >
+        <el-card
+          class="content-card"
+          shadow="hover"
+        >
+          <template #header>
+            <div class="card-header">
+              <span>{{ $t('dashboard.departmentStats') }}</span>
+            </div>
+          </template>
+          <div
+            v-loading="deptLoading"
+            class="chart-wrapper"
+          >
+            <BarChart
+              v-if="departmentChartData.xAxis.length > 0"
+              :x-axis-data="departmentChartData.xAxis"
+              :series="departmentChartData.series"
+              height="300px"
+              y-axis-name="Count"
+            />
+            <el-empty
+              v-else
+              :description="$t('common.noData')"
             />
           </div>
         </el-card>
@@ -235,7 +298,7 @@
         >
           <template #header>
             <div class="card-header">
-              <span>Department Statistics</span>
+              <span>{{ $t('dashboard.departmentStats') }}</span>
             </div>
           </template>
           <div
@@ -267,7 +330,7 @@
         >
           <template #header>
             <div class="card-header">
-              <span>Quick Actions</span>
+              <span>{{ $t('dashboard.quickActions') }}</span>
             </div>
           </template>
           <div class="quick-actions">
@@ -277,7 +340,7 @@
               @click="navigateTo('/patients')"
             >
               <el-icon><User /></el-icon>
-              Manage Patients
+              {{ $t('dashboard.managePatients') }}
             </el-button>
             <el-button
               type="success"
@@ -285,7 +348,7 @@
               @click="navigateTo('/medical-records')"
             >
               <el-icon><Document /></el-icon>
-              Medical Records
+              {{ $t('dashboard.medicalRecords') }}
             </el-button>
             <el-button
               type="warning"
@@ -293,7 +356,7 @@
               @click="navigateTo('/doctors')"
             >
               <el-icon><UserFilled /></el-icon>
-              Manage Doctors
+              {{ $t('dashboard.manageDoctors') }}
             </el-button>
             <el-button
               type="info"
@@ -301,7 +364,7 @@
               @click="navigateToStatistics"
             >
               <el-icon><DataAnalysis /></el-icon>
-              View Statistics
+              {{ $t('dashboard.viewStatistics') }}
             </el-button>
           </div>
         </el-card>

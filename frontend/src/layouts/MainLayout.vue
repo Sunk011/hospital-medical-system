@@ -28,21 +28,21 @@
         <el-menu-item index="/">
           <el-icon><HomeFilled /></el-icon>
           <template #title>
-            Dashboard
+            {{ $t('nav.dashboard') }}
           </template>
         </el-menu-item>
 
         <el-menu-item index="/patients">
           <el-icon><User /></el-icon>
           <template #title>
-            Patients
+            {{ $t('nav.patients') }}
           </template>
         </el-menu-item>
 
         <el-menu-item index="/medical-records">
           <el-icon><Document /></el-icon>
           <template #title>
-            Medical Records
+            {{ $t('nav.medicalRecords') }}
           </template>
         </el-menu-item>
 
@@ -51,7 +51,7 @@
         >
           <el-icon><UserFilled /></el-icon>
           <template #title>
-            Doctors
+            {{ $t('nav.doctors') }}
           </template>
         </el-menu-item>
 
@@ -70,7 +70,7 @@
         >
           <el-icon><DataAnalysis /></el-icon>
           <template #title>
-            Statistics
+            {{ $t('nav.statistics') }}
           </template>
         </el-menu-item>
 
@@ -99,7 +99,7 @@
           />
           <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">
-              Home
+              {{ $t('nav.dashboard') }}
             </el-breadcrumb-item>
             <el-breadcrumb-item v-if="currentRoute !== '/'">
               {{ currentPageTitle }}
@@ -108,6 +108,13 @@
         </div>
 
         <div class="header-right">
+          <el-button
+            :icon="languageStore.isChinese ? 'ChatLineRound' : 'ChatDotRound'"
+            circle
+            @click="languageStore.toggleLanguage()"
+          >
+            <span class="lang-icon">{{ languageStore.isChinese ? 'EN' : '中' }}</span>
+          </el-button>
           <el-dropdown
             trigger="click"
             @command="handleCommand"
@@ -124,18 +131,18 @@
               <el-dropdown-menu>
                 <el-dropdown-item command="profile">
                   <el-icon><User /></el-icon>
-                  Profile
+                  {{ $t('nav.profile') }}
                 </el-dropdown-item>
                 <el-dropdown-item command="password">
                   <el-icon><Lock /></el-icon>
-                  Change Password
+                  {{ $t('auth.changePassword') || 'Change Password' }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   divided
                   command="logout"
                 >
                   <el-icon><SwitchButton /></el-icon>
-                  Logout
+                  {{ $t('auth.logout') }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -175,11 +182,12 @@ import {
   SwitchButton,
   FirstAidKit,
 } from '@element-plus/icons-vue';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore, useLanguageStore } from '@/stores';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const languageStore = useLanguageStore();
 
 const isCollapsed = ref(false);
 
@@ -303,6 +311,12 @@ async function handleCommand(command: string) {
 .header-right {
   display: flex;
   align-items: center;
+  gap: 15px;
+}
+
+.lang-icon {
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .user-info {

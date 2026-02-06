@@ -7,6 +7,7 @@ import 'element-plus/dist/index.css';
 
 import App from './App.vue';
 import router from './router';
+import i18n from './locales';
 import './styles/index.css';
 
 // Create Vue app
@@ -25,6 +26,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.use(pinia);
 app.use(router);
 app.use(ElementPlus);
+app.use(i18n);
 
 // Mount app
 app.mount('#app');

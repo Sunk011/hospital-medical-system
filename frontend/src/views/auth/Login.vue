@@ -3,10 +3,10 @@
     <div class="login-card">
       <div class="login-header">
         <h1 class="login-title">
-          Hospital Medical System
+          {{ $t('dashboard.hospitalSystem') }}
         </h1>
         <p class="login-subtitle">
-          Please login to continue
+          {{ $t('auth.pleaseLogin') }}
         </p>
       </div>
 
@@ -20,7 +20,7 @@
         <el-form-item prop="username">
           <el-input
             v-model="loginForm.username"
-            placeholder="Username"
+            :placeholder="$t('auth.username')"
             size="large"
             :prefix-icon="User"
           />
@@ -30,7 +30,7 @@
           <el-input
             v-model="loginForm.password"
             type="password"
-            placeholder="Password"
+            :placeholder="$t('auth.password')"
             size="large"
             :prefix-icon="Lock"
             show-password
@@ -46,7 +46,7 @@
             :loading="loading"
             @click="handleLogin"
           >
-            {{ loading ? 'Logging in...' : 'Login' }}
+            {{ loading ? $t('common.loading') : $t('auth.login') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -84,11 +84,11 @@ const loginForm = reactive({
 
 const loginRules: FormRules = {
   username: [
-    { required: true, message: 'Please enter username', trigger: 'blur' },
+    { required: true, message: 'Username is required', trigger: 'blur' },
     { min: 3, max: 50, message: 'Username must be 3-50 characters', trigger: 'blur' },
   ],
   password: [
-    { required: true, message: 'Please enter password', trigger: 'blur' },
+    { required: true, message: 'Password is required', trigger: 'blur' },
     { min: 6, max: 100, message: 'Password must be 6-100 characters', trigger: 'blur' },
   ],
 };
@@ -110,7 +110,7 @@ async function handleLogin() {
       const redirect = (route.query.redirect as string) || '/';
       router.push(redirect);
     } else {
-      ElMessage.error('Login failed, please check your credentials');
+      ElMessage.error('Login failed');
     }
   } catch (error) {
     logger.error('Login error', error);

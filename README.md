@@ -180,6 +180,11 @@ hospital-medical-system/
 - ✅ **病历管理**: 病历记录、状态工作流、处方管理
 - ✅ **附件管理**: 文件上传下载 (PDF/JPG/PNG)
 - ✅ **统计分析**: 仪表板、图表可视化、报表生成
+- ✅ **性能优化**: 内存缓存、数据库索引优化
+- ✅ **测试**: 单元测试 (32个测试用例)
+- ✅ **部署**: Docker容器化、CI/CD流水线
+- ✅ **安全**: CSP、XSS防护、HSTS安全头
+- ✅ **国际化**: 中英文切换
 
 ---
 
@@ -190,10 +195,12 @@ hospital-medical-system/
 | 文档 | 说明 |
 |------|------|
 | [SETUP.md](./docs/SETUP.md) | 完整的设置和部署指南 |
+| [DEPLOYMENT.md](./docs/DEPLOYMENT.md) | 生产环境部署指南 |
 | [PROJECT_STATUS.md](./docs/PROJECT_STATUS.md) | 项目状态和进度 |
 | [PHASE1_SUMMARY.md](./docs/PHASE1_SUMMARY.md) | 第一阶段：基础架构 |
 | [PHASE2_SUMMARY.md](./docs/PHASE2_SUMMARY.md) | 第二阶段：核心功能 |
 | [PHASE3_SUMMARY.md](./docs/PHASE3_SUMMARY.md) | 第三阶段：统计分析 |
+| [TESTING.md](./docs/TESTING.md) | 测试文档 |
 
 > 所有文档均提供中文版本 (*.zh-CN.md)
 
@@ -208,6 +215,8 @@ npm run dev          # 启动开发服务器
 npm run build        # 编译 TypeScript
 npm run prisma:seed  # 运行种子脚本
 npm run prisma:studio # 打开数据库管理界面
+npm run test         # 运行单元测试
+npm run lint         # 代码检查
 ```
 
 ### 前端
@@ -216,6 +225,15 @@ npm run prisma:studio # 打开数据库管理界面
 npm run dev          # 启动开发服务器
 npm run build        # 构建生产版本
 npm run preview      # 预览生产版本
+npm run lint         # 代码检查
+```
+
+### Docker Compose
+
+```bash
+docker compose up -d --build  # 启动所有服务
+docker compose down           # 停止所有服务
+docker compose logs -f        # 查看日志
 ```
 
 ---
@@ -239,4 +257,4 @@ npm run preview      # 预览生产版本
 
 ---
 
-*最后更新: 2026-02-05*
+*最后更新: 2026-02-06*

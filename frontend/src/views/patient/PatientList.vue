@@ -2,13 +2,13 @@
   <div class="patient-list-page">
     <!-- Page Header -->
     <div class="page-header">
-      <h2>Patient Management</h2>
+      <h2>{{ $t('patient.title') }}</h2>
       <el-button
         type="primary"
         :icon="Plus"
         @click="handleCreate"
       >
-        Add Patient
+        {{ $t('patient.addPatient') }}
       </el-button>
     </div>
 
@@ -19,34 +19,34 @@
         inline
         @submit.prevent="handleSearch"
       >
-        <el-form-item label="Name">
+        <el-form-item :label="$t('patient.name')">
           <el-input
             v-model="searchForm.name"
-            placeholder="Patient name"
+            :placeholder="$t('patient.searchPlaceholder')"
             clearable
             @clear="handleSearch"
           />
         </el-form-item>
-        <el-form-item label="Medical No.">
+        <el-form-item :label="$t('patient.medicalNo')">
           <el-input
             v-model="searchForm.medicalNo"
-            placeholder="Medical number"
+            :placeholder="$t('patient.searchPlaceholder')"
             clearable
             @clear="handleSearch"
           />
         </el-form-item>
-        <el-form-item label="Phone">
+        <el-form-item :label="$t('patient.phone')">
           <el-input
             v-model="searchForm.phone"
-            placeholder="Phone number"
+            :placeholder="$t('patient.searchPlaceholder')"
             clearable
             @clear="handleSearch"
           />
         </el-form-item>
-        <el-form-item label="ID Card">
+        <el-form-item :label="$t('patient.idCard')">
           <el-input
             v-model="searchForm.idCard"
-            placeholder="ID card number"
+            :placeholder="$t('patient.searchPlaceholder')"
             clearable
             @clear="handleSearch"
           />
@@ -57,13 +57,13 @@
             :icon="Search"
             @click="handleSearch"
           >
-            Search
+            {{ $t('common.search') }}
           </el-button>
           <el-button
             :icon="Refresh"
             @click="handleReset"
           >
-            Reset
+            {{ $t('common.reset') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -80,18 +80,18 @@
       >
         <el-table-column
           prop="medicalNo"
-          label="Medical No."
+          :label="$t('patient.medicalNo')"
           width="180"
           fixed="left"
         />
         <el-table-column
           prop="name"
-          label="Name"
+          :label="$t('patient.name')"
           width="120"
         />
         <el-table-column
           prop="gender"
-          label="Gender"
+          :label="$t('patient.gender')"
           width="80"
           align="center"
         >
@@ -101,14 +101,14 @@
               :type="row.gender === 'M' ? 'primary' : 'danger'"
               size="small"
             >
-              {{ row.gender === 'M' ? 'Male' : 'Female' }}
+              {{ row.gender === 'M' ? $t('patient.male') : $t('patient.female') }}
             </el-tag>
             <span v-else>-</span>
           </template>
         </el-table-column>
         <el-table-column
           prop="age"
-          label="Age"
+          :label="$t('patient.age')"
           width="70"
           align="center"
         >
@@ -118,7 +118,7 @@
         </el-table-column>
         <el-table-column
           prop="phone"
-          label="Phone"
+          :label="$t('patient.phone')"
           width="130"
         >
           <template #default="{ row }">
@@ -127,7 +127,7 @@
         </el-table-column>
         <el-table-column
           prop="bloodType"
-          label="Blood Type"
+          :label="$t('patient.bloodType')"
           width="100"
           align="center"
         >
@@ -144,7 +144,7 @@
         </el-table-column>
         <el-table-column
           prop="recordsCount"
-          label="Records"
+          :label="$t('medicalRecord.prescriptions')"
           width="90"
           align="center"
         >
@@ -154,7 +154,7 @@
         </el-table-column>
         <el-table-column
           prop="lastVisitDate"
-          label="Last Visit"
+          :label="$t('patient.lastVisitDate') || 'Last Visit'"
           width="120"
         >
           <template #default="{ row }">
@@ -163,7 +163,7 @@
         </el-table-column>
         <el-table-column
           prop="createdAt"
-          label="Registered"
+          :label="$t('common.createdAt')"
           width="120"
         >
           <template #default="{ row }">
@@ -171,7 +171,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Actions"
+          :label="$t('common.actions')"
           width="200"
           fixed="right"
           align="center"
@@ -183,7 +183,7 @@
               :icon="View"
               @click="handleView(row)"
             >
-              View
+              {{ $t('common.view') || 'View' }}
             </el-button>
             <el-button
               type="warning"
@@ -191,7 +191,7 @@
               :icon="Edit"
               @click="handleEdit(row)"
             >
-              Edit
+              {{ $t('common.edit') }}
             </el-button>
             <el-button
               type="danger"
@@ -199,11 +199,17 @@
               :icon="Delete"
               @click="handleDelete(row)"
             >
-              Delete
+              {{ $t('common.delete') }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
+
+      <!-- Empty State -->
+      <el-empty
+        v-if="!patientStore.loading && patientStore.patients.length === 0"
+        :description="$t('patient.noPatientsFound')"
+      />
 
       <!-- Pagination -->
       <div class="pagination-container">
