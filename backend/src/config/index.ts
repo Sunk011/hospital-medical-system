@@ -23,7 +23,8 @@ export const config = {
   bcryptRounds: parseInt(process.env.BCRYPT_ROUNDS || '10', 10),
 
   // CORS
-  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173,http://localhost:5174',
+
 
   // Rate Limiting
   rateLimit: {
