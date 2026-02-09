@@ -21,7 +21,12 @@ app.use(cors({
   origin: function(origin, callback) {
     // Allow requests with no origin (mobile apps, curl, etc.)
     if (!origin) return callback(null, true);
-    
+
+    // In development, allow all origins
+    if (config.nodeEnv === 'development') {
+      return callback(null, true);
+    }
+
     const allowedOrigins = config.corsOrigin.split(',').map(o => o.trim());
     if (allowedOrigins.some(allowed => origin === allowed || allowed === '*')) {
       callback(null, true);
@@ -34,10 +39,11 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 }));
 
-// Rate limiting
+// Rate limiting - use higher limits in development
+const isDev = config.nodeEnv === 'development';
 const limiter = rateLimit({
   windowMs: config.rateLimit.windowMs,
-  max: config.rateLimit.maxRequests,
+  max: isDev ? 1000 : config.rateLimit.maxRequests,
   message: {
     code: 429,
     message: 'Too many requests, please try again later',
@@ -46,13 +52,17 @@ const limiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => {
+    // Skip rate limiting for auth endpoints (they have their own limiter)
+    return req.path.startsWith('/api/v1/auth/');
+  },
 });
 app.use('/api/', limiter);
 
 // Stricter rate limit for auth endpoints
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // 10 requests per window
+  max: isDev ? 100 : 20, // More generous in development
   message: {
     code: 429,
     message: 'Too many login attempts, please try again later',
